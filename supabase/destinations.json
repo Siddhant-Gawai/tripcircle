@@ -1,0 +1,67 @@
+[
+  {
+    "id": "jawhar",
+    "name": "Jawhar",
+    "landscape": "Hills",
+    "journey": "8–9 hours by road",
+    "duration": "3 days / 2 nights",
+    "summary": "Wooded valleys, slow village days and Warli culture. Our strongest balance of scenery and manageable travel.",
+    "caveat": "Stay outside the town centre. October–February is recommended; waterfalls are seasonal, not guaranteed.",
+    "source_url": "https://maharashtratourism.gov.in/nature/jawhar/",
+    "stay_url": null,
+    "itinerary": "Day 1: Arrive, settle into the homestay and take a sunset walk.\nDay 2: One valley outing and a locally arranged village or Warli art visit.\nDay 3: Slow breakfast and return to Ahmedabad.",
+    "position": 1
+  },
+  {
+    "id": "don-dang",
+    "name": "Don village + Dang",
+    "landscape": "Hills",
+    "journey": "8–10 hours by road",
+    "duration": "3 days / 2 nights",
+    "summary": "Open hills, forest roads and rural surroundings. A less developed alternative to the usual hill-station circuit.",
+    "caveat": "Private accommodation in Don is not confirmed. Verify a village stay around Ahwa/Dang before booking transport.",
+    "source_url": "https://www.holidify.com/places/saputara/don-hill-station-sightseeing-1254726.html",
+    "stay_url": null,
+    "itinerary": "Day 1: Travel to the verified village stay around Ahwa.\nDay 2: Explore Don in daylight; keep the afternoon unhurried.\nDay 3: Breakfast and return.",
+    "position": 2
+  },
+  {
+    "id": "bordi",
+    "name": "Bordi",
+    "landscape": "Beach",
+    "journey": "7–8 hours by road",
+    "duration": "2–3 days",
+    "summary": "Coastal walks, chikoo orchards and quiet sunsets. Our best shorter beach escape.",
+    "caveat": "Choose a small family-run guesthouse. A listing called a homestay can still have a resort atmosphere.",
+    "source_url": "https://maharashtratourism.gov.in/beach/bordi/",
+    "stay_url": null,
+    "itinerary": "Day 1: Arrive and walk the beach at sunset.\nDay 2: Slow morning, a host-arranged orchard visit and local food.\nDay 3: Return after breakfast if staying two nights.",
+    "position": 3
+  },
+  {
+    "id": "dediapada",
+    "name": "Dediapada–Ninai",
+    "landscape": "Forest",
+    "journey": "5–7 hours by road",
+    "duration": "2 days / 1 night",
+    "summary": "Our closest forest-focused option: rural roads and a waterfall outing around Dediapada.",
+    "caveat": "Confirm current access and private rooms. Older Sagai–Malsamot campsite listings do not establish current operation.",
+    "source_url": "https://narmada.nic.in/tourist-place/ninai-waterfall/",
+    "stay_url": null,
+    "itinerary": "Day 1: Drive to the verified stay and explore nearby surroundings.\nDay 2: Visit Ninai if accessible, then return. Waterfall flow depends on recent rain.",
+    "position": 4
+  },
+  {
+    "id": "guhagar",
+    "name": "Guhagar / Gimavi",
+    "landscape": "Beach",
+    "journey": "14–17 hours by road",
+    "duration": "4–5 days including travel",
+    "summary": "Konkan villages, spacious beaches and home-cooked meals. Strong homestay leads, but a longer journey.",
+    "caveat": "Allow extra travel days. Mauli Nivas and Koyari are research leads, not inspected or booked stays.",
+    "source_url": "https://maharashtratourism.gov.in/beach/guhagar/",
+    "stay_url": "https://maulinivasguhagar.com/",
+    "itinerary": "Travel day: Reach the homestay and rest.\nDestination days: Beach walks, village food and an optional local outing.\nFinal day: Return, allowing a full travel day.",
+    "position": 5
+  }
+]
