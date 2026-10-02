@@ -2,7 +2,7 @@
 
 Authentic photographs from Wikimedia Commons. Displayed cropped in the website; source files are unchanged. Each image retains its own licence.
 
-- **bordi-coast.jpg** — Bordi coastline. Raman Patel. [CC BY 3.0](https://creativecommons.org/licenses/by/3.0). [Original](https://commons.wikimedia.org/wiki/File:Bordi,_Maharashtra_401701,_India_-_panoramio.jpg).
+- **bordi-coast.jpg** — Local architecture in Bordi. Raman Patel. [CC BY 3.0](https://creativecommons.org/licenses/by/3.0). [Original](https://commons.wikimedia.org/wiki/File:Bordi,_Maharashtra_401701,_India_-_panoramio.jpg).
 
 - **don-hills.jpg** — Camping on Don hill — landscape photograph. Wandering eon. [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0). [Original](https://commons.wikimedia.org/wiki/File:Don_hill_station_camping.jpg).
 
