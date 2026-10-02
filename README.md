@@ -7,7 +7,8 @@ A shared trip planner built around a real decision: where should 6–7 friends g
 - Five researched destinations with travel estimates, itineraries, source links and caveats.
 - Mobile-first comparison with hills, forest and beach filters.
 - Public read access; a verified organizer can edit destination details, shared dates and notes.
-- Email/password accounts; one destination vote per user, changeable or removable.
+- Name and phone entry with no email verification or OTP for group participation. One changeable vote per device profile.
+- Shared comments and suggestions with place tags, timestamps and removal of your own posts.
 - Supabase persistence across devices; the shared plan refreshes every 20 seconds and on page focus.
 - Aggregate vote counts without exposing individual voters to public readers.
 
@@ -37,16 +38,19 @@ Existing Relay data remains in its original schemas. This project adds:
 | `public.tripcircle_destinations` | Researched places | Public read, organizer update |
 | `public.tripcircle_plan` | Shared dates and notes | Public read, organizer update |
 | `public.tripcircle_votes` | One vote per account | Users read/write their own vote |
+| `tripcircle_private.participants` | Device token hash, name and private phone | No direct client access |
+| `tripcircle_private.guest_votes` | One vote per device profile | Token-validated RPC only |
+| `tripcircle_private.discussion` | Comments and suggestions | Token-validated writes, public projection without phones/tokens |
 | `tripcircle_private.editors` | Organizer email allowlist | No direct client access |
 
-Row-level security is enabled on every table. Two narrowly scoped functions in the non-exposed private schema use `SECURITY DEFINER`: one checks a confirmed email against the editor allowlist; one returns fixed aggregate vote counts. Both pin an empty search path, use fully qualified relations and revoke default public execution. Public wrappers use invoker security. Authorization never uses editable user metadata.
+Row-level security is enabled on every table. Narrowly scoped functions in the non-exposed private schema use `SECURITY DEFINER` to check organizer identity, validate participant device tokens, and return fixed public feed/aggregate projections. Both pin an empty search path, use fully qualified relations and revoke default public execution. Public wrappers use invoker security. Authorization never uses editable user metadata.
 
-Reading the plan is public. Any authenticated account can vote, so votes are informal preferences, not an invitation-restricted election. Authentication is shared with Relay, although this frontend uses its own session-storage key. Do not place private expenses or personal information in public plan notes.
+Reading the plan, names and discussion is public. Participation uses a random 122-bit device token whose SHA-256 hash is stored in the private schema. Phone numbers are self-reported and stored privately; no phone lookup or recovery endpoint exists. The browser stores only token, display name, own vote and own post IDs. Tokens never grant organizer access. Clearing browser storage or using another device creates another profile; these are informal votes, not a verified one-person-one-vote election. Posting is limited to five posts/hour/profile, but this is not protection against determined abuse on a public site. Authentication is shared with Relay, although this frontend uses its own session-storage key. Do not place private expenses or personal information in public plan notes.
 
 ## Reproduce on a different Supabase project
 
 1. Apply `supabase/schema.sql` once to a fresh project. It is an initial schema, not an idempotent migration.
-2. Enable email/password signup with email confirmation.
+2. Apply `supabase/participants.sql` once. Group members need no Supabase Auth account. Provision a verified organizer account separately if you need protected plan editing.
 3. Provision an organizer in SQL (do not publish your real email in a seed file):
 
 ```sql
@@ -55,7 +59,7 @@ insert into tripcircle_private.editors(email) values ('organizer@example.com');
 
 4. Replace the frontend URL and publishable key in `src/config.ts`.
 5. Set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in a local shell and run `node scripts/seed.mjs`. The privileged key is used only by this server-side provisioning script.
-6. In Auth URL configuration, add your deployed Pages URL as a permitted redirect if desired. With the existing Relay defaults, confirmation may open Relay; after confirming, return to TripCircle to sign in. Email delivery and signup depend on the project's Auth configuration and rate limits.
+6. The main Join flow never calls Supabase Auth, so it has no email redirect. The separate organizer login uses an existing verified account; Relay-wide Auth settings are unchanged.
 
 The connected Relay schema and initial data were provisioned on 2 October 2026. The organizer allowlist was provisioned separately; no actual user account was created or password set.
 
@@ -74,3 +78,5 @@ The frontend is public; organizer-only editing is enforced by Postgres, not by h
 ## Research
 
 Sources live on each destination. Research was compiled on 2 October 2026. Road times are planning estimates; room availability, access, costs and seasonal waterfall flow are not confirmed. No images or text copied from tourism sites are included.
+
+Participant permission regression checks are in `tests/participants.sql`. Run transactionally through SQL editor; all test data rolls back.
