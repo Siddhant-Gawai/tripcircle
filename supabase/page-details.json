@@ -1,0 +1,188 @@
+{
+  "jawhar": {
+    "photos": [
+      {
+        "file": "jawhar-valley.jpg",
+        "caption": "Jai Vilas Palace seen from Hanuman Point",
+        "author": "Star Dust H",
+        "source": "https://commons.wikimedia.org/wiki/File:Jaivilas_Palace_from_Hanuman_Point,_Jawhar.jpg",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "bytes": 235876
+      },
+      {
+        "file": "jawhar-sunset.jpg",
+        "caption": "Sunset Point, Jawhar",
+        "author": "Star Dust H",
+        "source": "https://commons.wikimedia.org/wiki/File:Sunset_Point,_Jawhar.jpg",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "bytes": 184744
+      }
+    ],
+    "spots": [
+      {
+        "name": "Sunset Point",
+        "summary": "An unhurried evening looking across the wooded valley. Go before sunset and keep time for the return."
+      },
+      {
+        "name": "Hanuman Point",
+        "summary": "Valley views and a distant view of Jai Vilas Palace. A gentle sightseeing stop rather than a packed itinerary."
+      },
+      {
+        "name": "Dabhosa waterfall",
+        "summary": "A possible daytime outing. Flow changes after the monsoon; ask locally about access and current conditions."
+      }
+    ],
+    "stays": [
+      {
+        "name": "Rama Inn, Jawhar",
+        "summary": "Small hotel with family rooms and vegetarian meals. Ask which rooms are quiet and whether your group can stay together.",
+        "url": "https://www.ramainnjawhar.com/"
+      }
+    ]
+  },
+  "don-dang": {
+    "photos": [
+      {
+        "file": "don-hills.jpg",
+        "caption": "Camping on Don hill — landscape photograph",
+        "author": "Wandering eon",
+        "source": "https://commons.wikimedia.org/wiki/File:Don_hill_station_camping.jpg",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "bytes": 285510
+      }
+    ],
+    "spots": [
+      {
+        "name": "Don village",
+        "summary": "Take in the open hill landscape and village surroundings in daylight. Ask a local host about suitable walks."
+      },
+      {
+        "name": "Don village waterfall",
+        "summary": "A seasonal stop, not a guaranteed flowing waterfall in October or November. Check locally before making a detour."
+      }
+    ],
+    "stays": [
+      {
+        "name": "Ahwa family homestays",
+        "summary": "Use Ahwa as a possible base. Confirm an actual room booking, meals and the distance to Don before travelling.",
+        "url": "https://www.google.com/maps/search/?api=1&query=homestays+Ahwa+Dang"
+      },
+      {
+        "name": "Green Oraa Homestay, Ahwa",
+        "summary": "A map listing to investigate. Current operation, group capacity and the setting have not been verified.",
+        "url": "https://www.google.com/maps/search/?api=1&query=Green+Oraa+Homestay+Ahwa"
+      }
+    ],
+    "gallery_url": "https://dangs.nic.in/gallery/don-village/"
+  },
+  "bordi": {
+    "photos": [
+      {
+        "file": "bordi-beach.jpg",
+        "caption": "Bordi beach",
+        "author": "Sanjaybhagwat",
+        "source": "https://commons.wikimedia.org/wiki/File:BORDI_(2).jpg",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "bytes": 163027
+      },
+      {
+        "file": "bordi-coast.jpg",
+        "caption": "Local architecture in Bordi",
+        "author": "Raman Patel",
+        "source": "https://commons.wikimedia.org/wiki/File:Bordi,_Maharashtra_401701,_India_-_panoramio.jpg",
+        "license": "CC BY 3.0",
+        "license_url": "https://creativecommons.org/licenses/by/3.0",
+        "bytes": 362511
+      }
+    ],
+    "spots": [
+      {
+        "name": "Bordi beach",
+        "summary": "A long shoreline walk and sunset. Keep the day relaxed rather than filling it with activities."
+      },
+      {
+        "name": "Gholvad chikoo orchards",
+        "summary": "Ask your host to arrange an orchard visit; these are working farms and permission matters."
+      },
+      {
+        "name": "Aswali Dam",
+        "summary": "An optional outing offered by a local homestay. Confirm the route and access with your host."
+      }
+    ],
+    "stays": [
+      {
+        "name": "Florian Homestay, Bordi",
+        "summary": "A family-run Parsi bungalow opposite the beach. It can be upscale: ask for a group quote and room arrangements.",
+        "url": "https://florianhomestay.com/Default.aspx"
+      }
+    ]
+  },
+  "dediapada": {
+    "photos": [],
+    "spots": [
+      {
+        "name": "Ninai waterfall",
+        "summary": "The main forest outing, around 35 km from Dediapada according to the district guide. Confirm access and water flow locally."
+      },
+      {
+        "name": "Dediapada countryside",
+        "summary": "Keep a daylight drive around your stay as the simpler backup. Ask locally about suitable public stops and forest restrictions."
+      }
+    ],
+    "stays": [
+      {
+        "name": "Hotel Rameshwar, Dediapada",
+        "summary": "Town hotel and restaurant, useful as a simple base rather than a forest stay. Confirm current rooms, prices and parking directly.",
+        "url": "https://hotelrameshwar.com/"
+      }
+    ],
+    "gallery_url": "https://narmada.nic.in/tourist-place/ninai-waterfall/"
+  },
+  "guhagar": {
+    "photos": [
+      {
+        "file": "guhagar-beach.jpg",
+        "caption": "Guhagar beach",
+        "author": "Mahendra5806",
+        "source": "https://commons.wikimedia.org/wiki/File:Guhagar_Beach.JPG",
+        "license": "CC BY-SA 3.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+        "bytes": 279376
+      },
+      {
+        "file": "guhagar-coast.jpg",
+        "caption": "Guhagar coastline",
+        "author": "Vvp1001",
+        "source": "https://commons.wikimedia.org/wiki/File:Guhagar_beach1.jpg",
+        "license": "CC BY 3.0",
+        "license_url": "https://creativecommons.org/licenses/by/3.0",
+        "bytes": 61854
+      }
+    ],
+    "spots": [
+      {
+        "name": "Guhagar beach",
+        "summary": "Make this the main evening outing: a slow coastal walk, sunset and dinner at the stay."
+      },
+      {
+        "name": "Velaneshwar beach",
+        "summary": "A nearby coastal outing with a beach and temple. Pick one outing rather than rushing between stops."
+      },
+      {
+        "name": "Hedvi coast",
+        "summary": "An optional coastal detour. Ask your host about the best access and current conditions."
+      }
+    ],
+    "stays": [
+      {
+        "name": "Mauli Nivas, Guhagar",
+        "summary": "A homestay in a house, with two first-floor units described by the owner. Ask about beds for 6–7, meals and total charges.",
+        "url": "https://www.maulinivasguhagar.com/contact.html"
+      }
+    ]
+  }
+}
