@@ -1,0 +1,117 @@
+-- Transactional checks: test users, rooms, options and votes are rolled back.
+begin;
+select set_config('tripcircle.owner',gen_random_uuid()::text,true);
+select set_config('tripcircle.member',gen_random_uuid()::text,true);
+select set_config('tripcircle.pending',gen_random_uuid()::text,true);
+insert into auth.users(id,aud,role,email,email_confirmed_at) values
+(current_setting('tripcircle.owner')::uuid,'authenticated','authenticated','decision-owner@example.invalid',now()),
+(current_setting('tripcircle.member')::uuid,'authenticated','authenticated','decision-member@example.invalid',now()),
+(current_setting('tripcircle.pending')::uuid,'authenticated','authenticated','decision-pending@example.invalid',now());
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('tripcircle.owner'),'role','authenticated')::text,true);
+set local role authenticated;
+do $$ declare r jsonb; begin
+ r:=public.tripcircle_rooms('create',null,'{"name":"Owner","title":"Decision test","origin":"Ahmedabad","visibility":"public"}');
+ perform set_config('tripcircle.room',r->>'id',true);
+ perform public.tripcircle_rooms('shortlist',(r->>'id')::uuid,'{"destination":"jawhar"}');
+ r:=public.tripcircle_decisions('add_choice',current_setting('tripcircle.room')::uuid,'{"kind":"date","title":"First weekend","starts":"2026-10-30","ends":"2026-11-01"}');
+ perform set_config('tripcircle.date1',r->>'id',true);
+ r:=public.tripcircle_decisions('add_choice',current_setting('tripcircle.room')::uuid,'{"kind":"date","title":"Second weekend","starts":"2026-11-06","ends":"2026-11-08"}');
+ perform set_config('tripcircle.date2',r->>'id',true);
+ r:=public.tripcircle_rooms('create',null,'{"name":"Owner","title":"Other room","origin":"Ahmedabad"}');
+ perform set_config('tripcircle.other_room',r->>'id',true);
+ r:=public.tripcircle_decisions('add_choice',(r->>'id')::uuid,'{"kind":"stay","title":"Other room stay"}');
+ perform set_config('tripcircle.other_option',r->>'id',true);
+end $$;
+reset role;
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('tripcircle.member'),'role','authenticated')::text,true);
+set local role authenticated;
+select public.tripcircle_rooms('join',current_setting('tripcircle.room')::uuid,'{"name":"Member"}');
+reset role;
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('tripcircle.pending'),'role','authenticated')::text,true);
+set local role authenticated;
+select public.tripcircle_rooms('join',current_setting('tripcircle.room')::uuid,'{"name":"Pending"}');
+do $$ declare r jsonb; denied boolean:=false; begin
+ r:=public.tripcircle_decisions('view',current_setting('tripcircle.room')::uuid);
+ if r<>'{}'::jsonb then raise exception 'Pending member saw decisions'; end if;
+ begin perform public.tripcircle_decisions('add_choice',current_setting('tripcircle.room')::uuid,'{"kind":"stay","title":"Forbidden"}');exception when others then denied:=true;end;
+ if not denied then raise exception 'Pending member added option'; end if;
+end $$;
+reset role;
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('tripcircle.owner'),'role','authenticated')::text,true);
+set local role authenticated;
+select public.tripcircle_rooms('approve',current_setting('tripcircle.room')::uuid,jsonb_build_object('user_id',current_setting('tripcircle.member')));
+reset role;
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('tripcircle.member'),'role','authenticated')::text,true);
+set local role authenticated;
+do $$ declare r jsonb; denied boolean; begin
+ perform public.tripcircle_decisions('vote',current_setting('tripcircle.room')::uuid,jsonb_build_object('choice_id',current_setting('tripcircle.date1')));
+ perform public.tripcircle_decisions('vote',current_setting('tripcircle.room')::uuid,jsonb_build_object('choice_id',current_setting('tripcircle.date2')));
+ r:=public.tripcircle_decisions('view',current_setting('tripcircle.room')::uuid);
+ if (select count(*) from jsonb_array_elements(r->'choices') e where e->>'voted'='true')<>2 then raise exception 'Multi-date availability failed'; end if;
+ r:=public.tripcircle_decisions('add_choice',current_setting('tripcircle.room')::uuid,'{"kind":"stay","title":"Homestay A","price":6000,"url":"https://example.com/stay","notes":"Two nights"}');
+ perform set_config('tripcircle.stay1',r->>'id',true);
+ r:=public.tripcircle_decisions('add_choice',current_setting('tripcircle.room')::uuid,'{"kind":"stay","title":"Homestay B","price":8000}');
+ perform set_config('tripcircle.stay2',r->>'id',true);
+ r:=public.tripcircle_decisions('add_choice',current_setting('tripcircle.room')::uuid,'{"kind":"transport","title":"Shared cab","price":10000}');
+ perform set_config('tripcircle.transport',r->>'id',true);
+ perform public.tripcircle_decisions('vote',current_setting('tripcircle.room')::uuid,jsonb_build_object('choice_id',current_setting('tripcircle.stay1')));
+ perform public.tripcircle_decisions('vote',current_setting('tripcircle.room')::uuid,jsonb_build_object('choice_id',current_setting('tripcircle.stay2')));
+ r:=public.tripcircle_decisions('view',current_setting('tripcircle.room')::uuid);
+ if (select count(*) from jsonb_array_elements(r->'choices') e where e->>'kind'='stay' and e->>'voted'='true')<>1 then raise exception 'Multiple stay votes accepted'; end if;
+ if exists(select 1 from jsonb_array_elements(r->'choices') e where e ? 'created_by' or e ? 'user_id' or e ? 'room_id') then raise exception 'Private identifiers leaked'; end if;
+ denied:=false;begin perform public.tripcircle_decisions('vote',current_setting('tripcircle.room')::uuid,jsonb_build_object('choice_id',current_setting('tripcircle.other_option')));exception when others then denied:=true;end;
+ if not denied then raise exception 'Cross-room vote accepted'; end if;
+ denied:=false;begin perform public.tripcircle_decisions('save_overview',current_setting('tripcircle.room')::uuid,'{"meeting_point":"Forged"}');exception when others then denied:=true;end;
+ if not denied then raise exception 'Participant confirmed final details'; end if;
+ denied:=false;begin perform public.tripcircle_decisions('archive_choice',current_setting('tripcircle.room')::uuid,jsonb_build_object('choice_id',current_setting('tripcircle.stay1')));exception when others then denied:=true;end;
+ if not denied then raise exception 'Participant removed option'; end if;
+ denied:=false;begin perform public.tripcircle_decisions('add_choice',current_setting('tripcircle.room')::uuid,'{"kind":"date","title":"Invalid","starts":"2026-11-01","ends":"2026-10-01"}');exception when others then denied:=true;end;
+ if not denied then raise exception 'Participant created poll'; end if;
+ denied:=false;begin perform public.tripcircle_decisions('add_choice',current_setting('tripcircle.room')::uuid,'{"kind":"stay","title":"Unsafe link","url":"javascript:alert(1)"}');exception when others then denied:=true;end;
+ if not denied then raise exception 'Unsafe link accepted'; end if;
+ denied:=false;begin perform 1 from tripcircle_private.choice_votes;exception when insufficient_privilege then denied:=true;end;
+ if not denied then raise exception 'Direct private votes accessible'; end if;
+end $$;
+reset role;
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('tripcircle.owner'),'role','authenticated')::text,true);
+set local role authenticated;
+do $$ declare r jsonb; denied boolean:=false; begin
+ begin perform public.tripcircle_decisions('save_overview',current_setting('tripcircle.room')::uuid,jsonb_build_object('stay_id',current_setting('tripcircle.other_option')));exception when others then denied:=true;end;
+ if not denied then raise exception 'Cross-room final selection accepted'; end if;
+ denied:=false;begin perform public.tripcircle_decisions('save_overview',current_setting('tripcircle.room')::uuid,jsonb_build_object('date_id',current_setting('tripcircle.stay1')));exception when others then denied:=true;end;
+ if not denied then raise exception 'Wrong-category date accepted'; end if;
+ denied:=false;begin perform public.tripcircle_decisions('add_choice',current_setting('tripcircle.room')::uuid,'{"kind":"date","title":"Bad range","starts":"2026-11-01","ends":"2026-10-01"}');exception when others then denied:=true;end;
+ if not denied then raise exception 'Invalid date range accepted'; end if;
+ perform public.tripcircle_decisions('save_overview',current_setting('tripcircle.room')::uuid,jsonb_build_object('destination_id','jawhar','date_id',current_setting('tripcircle.date1'),'stay_id',current_setting('tripcircle.stay2'),'transport_id',current_setting('tripcircle.transport'),'budget','₹5,000 approx.','meeting_point','Station entrance','meeting_time','30 Oct 06:30 IST'));
+ r:=public.tripcircle_decisions('view',current_setting('tripcircle.room')::uuid);
+ if r->'overview'->>'meeting_point'<>'Station entrance' or r->'overview'->>'destination_id'<>'jawhar' then raise exception 'Final overview not saved'; end if;
+ r:=public.tripcircle_rooms('view',current_setting('tripcircle.room')::uuid);
+ if r->>'budget'<>'₹5,000 approx.' or r->>'dates' not like '30 Oct 2026%' then raise exception 'Public metadata not synchronized'; end if;
+ if r ? 'overview' or r ? 'choices' then raise exception 'Overview unexpectedly in room projection'; end if;
+ perform public.tripcircle_decisions('archive_choice',current_setting('tripcircle.room')::uuid,jsonb_build_object('choice_id',current_setting('tripcircle.date1')));
+ r:=public.tripcircle_decisions('view',current_setting('tripcircle.room')::uuid);
+ if r->'overview'->>'date_id' is not null then raise exception 'Removed date still confirmed'; end if;
+ perform public.tripcircle_rooms('remove_member',current_setting('tripcircle.room')::uuid,jsonb_build_object('user_id',current_setting('tripcircle.member')));
+ r:=public.tripcircle_decisions('view',current_setting('tripcircle.room')::uuid);
+ if exists(select 1 from jsonb_array_elements(r->'choices') e where (e->>'votes')::int>0) then raise exception 'Removed member still counted'; end if;
+end $$;
+reset role;
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('tripcircle.member'),'role','authenticated')::text,true);
+set local role authenticated;
+do $$ declare denied boolean:=false; begin
+ if public.tripcircle_decisions('view',current_setting('tripcircle.room')::uuid)<>'{}'::jsonb then raise exception 'Removed member retained access'; end if;
+ begin perform public.tripcircle_decisions('vote',current_setting('tripcircle.room')::uuid,jsonb_build_object('choice_id',current_setting('tripcircle.stay1')));exception when others then denied:=true;end;
+ if not denied then raise exception 'Removed member voted'; end if;
+end $$;
+reset role;
+select set_config('request.jwt.claims','{"role":"anon"}',true);
+set local role anon;
+do $$ declare r jsonb; denied boolean:=false; begin
+ r:=public.tripcircle_decisions('view',current_setting('tripcircle.room')::uuid);
+ if r<>'{}'::jsonb then raise exception 'Anonymous visitor saw private decisions'; end if;
+ r:=public.tripcircle_rooms('view',current_setting('tripcircle.room')::uuid);
+ if r ? 'meeting_point' or r ? 'overview' or r ? 'choices' then raise exception 'Meeting point exposed publicly'; end if;
+ begin perform public.tripcircle_decisions('vote',current_setting('tripcircle.room')::uuid,jsonb_build_object('choice_id',current_setting('tripcircle.stay1')));exception when others then denied:=true;end;
+ if not denied then raise exception 'Anonymous visitor voted'; end if;
+end $$;
+rollback;
