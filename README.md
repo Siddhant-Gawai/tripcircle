@@ -7,7 +7,7 @@ A shared trip planner built around a real decision: where should 6–7 friends g
 - Five clickable destination pages with authentic photographs, summaries, viewpoints, itineraries, map links and small-stay leads.
 - Mobile-first comparison with hills, forest and beach filters.
 - Public read access; a verified organizer can edit destination details, shared dates and notes.
-- No signup: one-tap picks and inline name/message comments. No phone number, email or password needed. One changeable vote per browser.
+- Name and 10-digit number on first entry; number only to reopen the same unverified group profile across devices. No email, password, PIN or OTP. One changeable vote per number profile.
 - Shared comments and suggestions with place tags, timestamps and removal of your own posts.
 - Supabase persistence across devices; the shared plan refreshes every 20 seconds and on page focus.
 - Aggregate vote counts without exposing individual voters to public readers.
@@ -45,7 +45,7 @@ Existing Relay data remains in its original schemas. This project adds:
 
 Row-level security is enabled on every table. Narrowly scoped functions in the non-exposed private schema use `SECURITY DEFINER` to check organizer identity, validate participant device tokens, and return fixed public feed/aggregate projections. Both pin an empty search path, use fully qualified relations and revoke default public execution. Public wrappers use invoker security. Authorization never uses editable user metadata.
 
-Reading the plan, names and discussion is public. Participation uses a random 122-bit device token whose SHA-256 hash is stored in the private schema. The new interface does not collect phone numbers. Existing phones remain private; no phone lookup or recovery endpoint exists. The browser stores only token, display name, own vote and own post IDs. Tokens never grant organizer access. Clearing browser storage or using another device creates another profile; these are informal votes, not a verified one-person-one-vote election. Posting is limited to five posts/hour/profile, but this is not protection against determined abuse on a public site. Authentication is shared with Relay, although this frontend uses its own session-storage key. Do not place private expenses or personal information in public plan notes.
+Reading the plan, names and discussion is public. Participation uses a random 122-bit device token whose SHA-256 hash is stored in the private schema. Phone numbers are stored privately. The number-only login RPC intentionally allows anyone knowing a number to reopen that group profile; this is not verified authentication and must not protect sensitive data. The database resolves a random session token to the shared number profile. Organizer access remains separate. The browser stores only token, display name, own vote and own post IDs. Tokens never grant organizer access. Use the same number on another device to restore the profile, vote and own-post controls. Clearing storage signs out locally. Votes are informal, not a verified one-person-one-vote election. Posting is limited to five posts/hour/profile, but this is not protection against determined abuse on a public site. Authentication is shared with Relay, although this frontend uses its own session-storage key. Do not place private expenses or personal information in public plan notes.
 
 ## Reproduce on a different Supabase project
 
@@ -59,7 +59,7 @@ insert into tripcircle_private.editors(email) values ('organizer@example.com');
 
 4. Replace the frontend URL and publishable key in `src/config.ts`.
 5. Set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in a local shell and run `node scripts/seed.mjs`. The privileged key is used only by this server-side provisioning script.
-6. Browsing and participation never call Supabase Auth, so there is no email redirect. The separate organizer login uses an existing verified account; Relay-wide Auth settings are unchanged.
+6. Browsing and number-profile participation never call Supabase Auth, so there is no email redirect. The separate organizer login uses an existing verified account; Relay-wide Auth settings are unchanged.
 
 The connected Relay schema and initial data were provisioned on 2 October 2026. The organizer allowlist was provisioned separately; no actual user account was created or password set.
 
@@ -84,3 +84,7 @@ Participant permission regression checks are in `tests/participants.sql`. Run tr
 ## Simple destination pages
 
 After the initial schema and participant migrations, apply `supabase/simple-pages.sql`. Run the seed script to load destinations and their `details` JSON from `supabase/page-details.json`. Photos live in `public/photos/`; attribution is recorded in `CREDITS.md` and `supabase/photo-credits.json`. Hash routes such as `#place/jawhar` support share links and page refreshes on GitHub Pages. The separate Manage entry in the footer keeps organizer editing protected. Run `tests/simple-pages.sql` transactionally for no-phone participation checks.
+
+## Number-only group profiles
+
+Apply `supabase/number-login.sql` after the earlier migrations. The name is entered once; later entries need only the 10-digit Indian national number. Private `number_profiles` maps numbers to participants; `number_sessions` maps per-device capability hashes to that participant. Shared votes and posts remain in the existing tables. Logging out revokes only that device session. Existing +91 profiles are backfilled; if old profiles had duplicate numbers, the earliest is used and the others remain historical records. Anonymous profiles without numbers remain historical unless separately migrated. `tests/number-login.sql` checks two-device restoration, synchronized votes, post ownership, logout, phone validation and private-table isolation transactionally.
