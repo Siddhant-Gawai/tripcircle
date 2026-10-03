@@ -14,3 +14,22 @@
 .public-app main{padding-top:12px}
 .public-hero{padding-top:18px}
 @media(max-width:700px){.public-app header{height:auto;min-height:66px;margin-top:8px;padding:10px 20px;gap:12px;flex-wrap:wrap}.public-app nav{gap:12px;flex-wrap:wrap}.public-app nav button{padding:9px 13px}.public-app main{padding-top:18px}}
+
+/* Mobile layout: keep these after desktop art direction. */
+.public-hero>*{min-width:0}
+.public-app .no-photo{background:linear-gradient(150deg,#123d2f,#476947);padding:28px;text-align:left;align-items:flex-start;font-size:26px;line-height:1.25}
+.public-app .no-photo span{font-size:14px;line-height:1.6;color:#e0eadb;max-width:240px}
+@media(max-width:700px){
+ .public-hero{grid-template-columns:minmax(0,1fr);gap:22px;min-height:0}
+ .public-hero figure{width:100%;height:300px;margin:0;border-radius:28px}
+ .public-hero figure:after{border-radius:18px}
+ .public-hero h1{font-size:clamp(36px,10.5vw,50px);line-height:1.08}
+ .public-hero figcaption{padding:50px 20px 20px;font-size:12px;line-height:1.6}
+ .public-app nav>a[href="#places"]{display:inline}
+ .public-app header{align-items:center;gap:14px}
+ .public-app .brand{font-size:20px;flex-shrink:0}
+ .public-app nav{margin-left:auto;gap:14px}
+ .public-app nav>a{font-size:14px}
+ .public-app .hero-actions button{font-size:14px}
+}
+@media(max-width:420px){.public-app header{padding:12px 20px}.public-app nav{width:100%;justify-content:space-between;margin:0}.public-app nav button{margin-left:auto}.public-hero figure{height:270px}}
