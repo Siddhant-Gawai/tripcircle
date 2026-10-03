@@ -12,7 +12,13 @@ Google sign-in needs the one-time setup in [GOOGLE_SETUP.md](GOOGLE_SETUP.md). U
 
 Run `tests/rooms.sql` transactionally to check private-room access, pending approval, owner controls, capacity, collaboration, removed-member access, anonymous previews and private-table isolation. No test identities or test rooms are retained. These tests do not complete a real Google sign-in.
 
-Hash routes (`#place/<id>`, `#room/<id>`, `#join/<code>`, `#my-trips`) work on GitHub Pages without server rewrites. The original number-only friends planner remains at `#friends`; its public comments and unverified profiles are separate from the room planner. Do not use it for private trip details. This first release does not include expense splitting, booking, public moderation tooling or verified phone numbers. Wider stranger-group discovery should include reporting/moderation and community rules before promotion.
+Hash routes (`#place/<id>`, `#room/<id>`, `#join/<code>`, `#my-trips`) work on GitHub Pages without server rewrites. The original friends planner is no longer included in the frontend or navigation. Historical tables and migrations remain for data continuity; rooms use Google-authenticated membership. This release does not include expense splitting, booking, public moderation tooling or verified phone numbers. Wider stranger-group discovery should include reporting/moderation and community rules before promotion.
+
+## Date polls and trip decisions
+
+Apply `supabase/decisions.sql` after the room migrations. Approved members can mark availability for multiple date options and cast one changeable stay/transport vote per category. Members can suggest stays and transport with optional HTTPS links, group quotes and notes. Only organizers can add date polls, archive options and save confirmed details. Private `room_choices`, `choice_votes` and `room_overview` tables have RLS and no direct client grants; checked RPCs enforce existing room permissions. Votes from removed members are excluded. The overview includes destination, dates, stay, transport, budget per person, meeting point/time and unfinished task count. Confirmed dates/budget update public trip previews; meeting details and options stay inside approved rooms. Confirming an option does not make a booking. Room refreshes update polls and decisions automatically.
+
+`tests/decisions.sql` checks availability, vote replacement, pending/removed access, cross-room choices, organizer confirmation, private projections, safe links and archived selections transactionally. Option removal is a reversible archive in the database; votes and historical records are retained.
 
 ---
 
@@ -28,7 +34,7 @@ A shared trip planner built around a real decision: where should 6–7 friends g
 - Supabase persistence across devices; the shared plan refreshes every 20 seconds and on page focus.
 - Aggregate vote counts without exposing individual voters to public readers.
 
-The section below documents the original single-group planner, retained for compatibility. Expenses and date polls are future work.
+The section below documents the original single-group planner, retained for compatibility. Expense splitting is future work.
 
 ## Stack
 
