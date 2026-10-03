@@ -1,5 +1,21 @@
 # TripCircle
 
+A public small-group trip planner: quiet destination pages, Google sign-in, private/public rooms, organizer approval, shared itineraries, place picks, discussion and packing checklists.
+
+Live: https://siddhant-gawai.github.io/tripcircle/
+
+## Public room planner
+
+Apply `supabase/rooms.sql` and then `supabase/room-index.sql` after the existing schema migrations. It creates isolated room tables in `tripcircle_private`; all reads and writes go through `public.tripcircle_rooms`, with authenticated identity checks and room membership checks. Phone-only profiles from the original friends planner cannot access rooms. Public previews contain title, origin, summary, dates, budget and group size; invite codes, members, plans and discussion are protected. Organizers approve requests, enforce capacity and may remove members. Accepted members can pick a shortlisted place, share messages, add packing tasks and update task completion. Organizers manage the final shortlist, itinerary and visibility. Rooms refresh every 15 seconds; public listings every 20 seconds.
+
+Google sign-in needs the one-time setup in [GOOGLE_SETUP.md](GOOGLE_SETUP.md). Until the Google provider is enabled, browsing works and creation/joining clearly reports that sign-in is unavailable. Account email is not returned in room previews or member lists. Sessions use a separate auth storage key from the original planner. Google account names are suggested as editable display names.
+
+Run `tests/rooms.sql` transactionally to check private-room access, pending approval, owner controls, capacity, collaboration, removed-member access, anonymous previews and private-table isolation. No test identities or test rooms are retained. These tests do not complete a real Google sign-in.
+
+Hash routes (`#place/<id>`, `#room/<id>`, `#join/<code>`, `#my-trips`) work on GitHub Pages without server rewrites. The original number-only friends planner remains at `#friends`; its public comments and unverified profiles are separate from the room planner. Do not use it for private trip details. This first release does not include expense splitting, booking, public moderation tooling or verified phone numbers. Wider stranger-group discovery should include reporting/moderation and community rules before promotion.
+
+---
+
 A shared trip planner built around a real decision: where should 6–7 friends go from Ahmedabad for a peaceful October/November break?
 
 ## What works
@@ -12,7 +28,7 @@ A shared trip planner built around a real decision: where should 6–7 friends g
 - Supabase persistence across devices; the shared plan refreshes every 20 seconds and on page focus.
 - Aggregate vote counts without exposing individual voters to public readers.
 
-Expenses, multi-trip groups and date polls are future work. This version is a single shared shortlist, not a general booking service.
+The section below documents the original single-group planner, retained for compatibility. Expenses and date polls are future work.
 
 ## Stack
 
