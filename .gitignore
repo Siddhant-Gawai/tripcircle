@@ -3,3 +3,5 @@ dist/
 .env
 .env.local
 supabase/owner-bootstrap.sql
+playwright-report/
+test-results/

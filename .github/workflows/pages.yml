@@ -23,7 +23,14 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci --ignore-scripts
+      - run: npm run lint
+      - run: npm run format:check
       - run: npm run build
+        env:
+          VITE_TRIPCIRCLE_REALTIME_ENABLED: ${{ vars.VITE_TRIPCIRCLE_REALTIME_ENABLED }}
+      - run: npm run check:bundle
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:smoke
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -1,0 +1,253 @@
+[
+  {
+    "id": "jawhar",
+    "name": "Jawhar",
+    "landscape": "Hills",
+    "journey": "8–9 hours by road",
+    "duration": "3 days / 2 nights",
+    "summary": "Wooded valleys, slow village days and Warli culture. Our strongest balance of scenery and manageable travel.",
+    "caveat": "Stay outside the town centre. October–February is recommended; waterfalls are seasonal, not guaranteed.",
+    "source_url": "https://maharashtratourism.gov.in/nature/jawhar/",
+    "stay_url": null,
+    "itinerary": "Day 1: Arrive, settle into the homestay and take a sunset walk.\nDay 2: One valley outing and a locally arranged village or Warli art visit.\nDay 3: Slow breakfast and return to Ahmedabad.",
+    "position": 1,
+    "details": {
+      "photos": [
+        {
+          "file": "jawhar-valley.jpg",
+          "caption": "Wooded valley and green hillside below distant buildings at Jawhar",
+          "author": "Star Dust H",
+          "source": "https://commons.wikimedia.org/wiki/File:Jaivilas_Palace_from_Hanuman_Point,_Jawhar.jpg",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+          "bytes": 235876
+        },
+        {
+          "file": "jawhar-sunset.jpg",
+          "caption": "Sunset Point, Jawhar",
+          "author": "Star Dust H",
+          "source": "https://commons.wikimedia.org/wiki/File:Sunset_Point,_Jawhar.jpg",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+          "bytes": 184744
+        }
+      ],
+      "spots": [
+        {
+          "name": "Sunset Point",
+          "summary": "An unhurried evening looking across the wooded valley. Go before sunset and keep time for the return."
+        },
+        {
+          "name": "Hanuman Point",
+          "summary": "Valley views and a distant view of Jai Vilas Palace. A gentle sightseeing stop rather than a packed itinerary."
+        },
+        {
+          "name": "Dabhosa waterfall",
+          "summary": "A possible daytime outing. Flow changes after the monsoon; ask locally about access and current conditions."
+        }
+      ],
+      "stays": [
+        {
+          "name": "Rama Inn, Jawhar",
+          "summary": "Small hotel with family rooms and vegetarian meals. Ask which rooms are quiet and whether your group can stay together.",
+          "url": "https://www.ramainnjawhar.com/"
+        }
+      ]
+    }
+  },
+  {
+    "id": "don-dang",
+    "name": "Don village + Dang",
+    "landscape": "Hills",
+    "journey": "8–10 hours by road",
+    "duration": "3 days / 2 nights",
+    "summary": "Open hills, forest roads and rural surroundings. A less developed alternative to the usual hill-station circuit.",
+    "caveat": "Private accommodation in Don is not confirmed. Verify a village stay around Ahwa/Dang before booking transport.",
+    "source_url": "https://www.holidify.com/places/saputara/don-hill-station-sightseeing-1254726.html",
+    "stay_url": null,
+    "itinerary": "Day 1: Travel to the verified village stay around Ahwa.\nDay 2: Explore Don in daylight; keep the afternoon unhurried.\nDay 3: Breakfast and return.",
+    "position": 2,
+    "details": {
+      "photos": [
+        {
+          "file": "don-hills.jpg",
+          "caption": "Camping on Don hill — landscape photograph",
+          "author": "Wandering eon",
+          "source": "https://commons.wikimedia.org/wiki/File:Don_hill_station_camping.jpg",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+          "bytes": 285510
+        }
+      ],
+      "spots": [
+        {
+          "name": "Don village",
+          "summary": "Take in the open hill landscape and village surroundings in daylight. Ask a local host about suitable walks."
+        },
+        {
+          "name": "Don village waterfall",
+          "summary": "A seasonal stop, not a guaranteed flowing waterfall in October or November. Check locally before making a detour."
+        }
+      ],
+      "stays": [
+        {
+          "name": "Ahwa family homestays",
+          "summary": "Use Ahwa as a possible base. Confirm an actual room booking, meals and the distance to Don before travelling.",
+          "url": "https://www.google.com/maps/search/?api=1&query=homestays+Ahwa+Dang"
+        },
+        {
+          "name": "Green Oraa Homestay, Ahwa",
+          "summary": "A map listing to investigate. Current operation, group capacity and the setting have not been verified.",
+          "url": "https://www.google.com/maps/search/?api=1&query=Green+Oraa+Homestay+Ahwa"
+        }
+      ],
+      "gallery_url": "https://dangs.nic.in/gallery/don-village/"
+    }
+  },
+  {
+    "id": "bordi",
+    "name": "Bordi",
+    "landscape": "Beach",
+    "journey": "7–8 hours by road",
+    "duration": "2–3 days",
+    "summary": "Coastal walks, chikoo orchards and quiet sunsets. Our best shorter beach escape.",
+    "caveat": "Choose a small family-run guesthouse. A listing called a homestay can still have a resort atmosphere.",
+    "source_url": "https://maharashtratourism.gov.in/beach/bordi/",
+    "stay_url": null,
+    "itinerary": "Day 1: Arrive and walk the beach at sunset.\nDay 2: Slow morning, a host-arranged orchard visit and local food.\nDay 3: Return after breakfast if staying two nights.",
+    "position": 3,
+    "details": {
+      "photos": [
+        {
+          "file": "bordi-beach.jpg",
+          "caption": "Rippled sand beside a calm sea and a tree-lined shore at Bordi",
+          "author": "Sanjaybhagwat",
+          "source": "https://commons.wikimedia.org/wiki/File:BORDI_(2).jpg",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+          "bytes": 163027
+        },
+        {
+          "file": "bordi-coast.jpg",
+          "caption": "Local architecture in Bordi",
+          "author": "Raman Patel",
+          "source": "https://commons.wikimedia.org/wiki/File:Bordi,_Maharashtra_401701,_India_-_panoramio.jpg",
+          "license": "CC BY 3.0",
+          "license_url": "https://creativecommons.org/licenses/by/3.0",
+          "bytes": 362511
+        }
+      ],
+      "spots": [
+        {
+          "name": "Bordi beach",
+          "summary": "A long shoreline walk and sunset. Keep the day relaxed rather than filling it with activities."
+        },
+        {
+          "name": "Gholvad chikoo orchards",
+          "summary": "Ask your host to arrange an orchard visit; these are working farms and permission matters."
+        },
+        {
+          "name": "Aswali Dam",
+          "summary": "An optional outing offered by a local homestay. Confirm the route and access with your host."
+        }
+      ],
+      "stays": [
+        {
+          "name": "Florian Homestay, Bordi",
+          "summary": "A family-run Parsi bungalow opposite the beach. It can be upscale: ask for a group quote and room arrangements.",
+          "url": "https://florianhomestay.com/Default.aspx"
+        }
+      ]
+    }
+  },
+  {
+    "id": "dediapada",
+    "name": "Dediapada–Ninai",
+    "landscape": "Forest",
+    "journey": "5–7 hours by road",
+    "duration": "2 days / 1 night",
+    "summary": "Our closest forest-focused option: rural roads and a waterfall outing around Dediapada.",
+    "caveat": "Confirm current access and private rooms. Older Sagai–Malsamot campsite listings do not establish current operation.",
+    "source_url": "https://narmada.nic.in/tourist-place/ninai-waterfall/",
+    "stay_url": null,
+    "itinerary": "Day 1: Drive to the verified stay and explore nearby surroundings.\nDay 2: Visit Ninai if accessible, then return. Waterfall flow depends on recent rain.",
+    "position": 4,
+    "details": {
+      "photos": [],
+      "spots": [
+        {
+          "name": "Ninai waterfall",
+          "summary": "The main forest outing, around 35 km from Dediapada according to the district guide. Confirm access and water flow locally."
+        },
+        {
+          "name": "Dediapada countryside",
+          "summary": "Keep a daylight drive around your stay as the simpler backup. Ask locally about suitable public stops and forest restrictions."
+        }
+      ],
+      "stays": [
+        {
+          "name": "Hotel Rameshwar, Dediapada",
+          "summary": "Town hotel and restaurant, useful as a simple base rather than a forest stay. Confirm current rooms, prices and parking directly.",
+          "url": "https://hotelrameshwar.com/"
+        }
+      ],
+      "gallery_url": "https://narmada.nic.in/tourist-place/ninai-waterfall/"
+    }
+  },
+  {
+    "id": "guhagar",
+    "name": "Guhagar / Gimavi",
+    "landscape": "Beach",
+    "journey": "14–17 hours by road",
+    "duration": "4–5 days including travel",
+    "summary": "Konkan villages, spacious beaches and home-cooked meals. Strong homestay leads, but a longer journey.",
+    "caveat": "Allow extra travel days. Mauli Nivas and Koyari are research leads, not inspected or booked stays.",
+    "source_url": "https://maharashtratourism.gov.in/beach/guhagar/",
+    "stay_url": "https://maulinivasguhagar.com/",
+    "itinerary": "Travel day: Reach the homestay and rest.\nDestination days: Beach walks, village food and an optional local outing.\nFinal day: Return, allowing a full travel day.",
+    "position": 5,
+    "details": {
+      "photos": [
+        {
+          "file": "guhagar-beach.jpg",
+          "caption": "Two people standing at the water’s edge as waves roll onto Guhagar beach",
+          "author": "Mahendra5806",
+          "source": "https://commons.wikimedia.org/wiki/File:Guhagar_Beach.JPG",
+          "license": "CC BY-SA 3.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+          "bytes": 279376
+        },
+        {
+          "file": "guhagar-coast.jpg",
+          "caption": "Guhagar coastline",
+          "author": "Vvp1001",
+          "source": "https://commons.wikimedia.org/wiki/File:Guhagar_beach1.jpg",
+          "license": "CC BY 3.0",
+          "license_url": "https://creativecommons.org/licenses/by/3.0",
+          "bytes": 61854
+        }
+      ],
+      "spots": [
+        {
+          "name": "Guhagar beach",
+          "summary": "Make this the main evening outing: a slow coastal walk, sunset and dinner at the stay."
+        },
+        {
+          "name": "Velaneshwar beach",
+          "summary": "A nearby coastal outing with a beach and temple. Pick one outing rather than rushing between stops."
+        },
+        {
+          "name": "Hedvi coast",
+          "summary": "An optional coastal detour. Ask your host about the best access and current conditions."
+        }
+      ],
+      "stays": [
+        {
+          "name": "Mauli Nivas, Guhagar",
+          "summary": "A homestay in a house, with two first-floor units described by the owner. Ask about beds for 6–7, meals and total charges.",
+          "url": "https://www.maulinivasguhagar.com/contact.html"
+        }
+      ]
+    }
+  }
+]

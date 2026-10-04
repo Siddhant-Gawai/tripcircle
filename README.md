@@ -1,112 +1,72 @@
 # TripCircle
 
-A public small-group trip planner: quiet destination pages, Google sign-in, private/public rooms, organizer approval, shared itineraries, place picks, discussion and packing checklists.
+Peaceful places and one shared plan for a small group. Browse destinations from Ahmedabad, create a room, invite your people and decide the trip together.
 
-Live: https://siddhant-gawai.github.io/tripcircle/
+[Open TripCircle](https://siddhant-gawai.github.io/tripcircle/)
 
-## Public room planner
+![TripCircle homepage](docs/homepage.png)
 
-Apply `supabase/rooms.sql` and then `supabase/room-index.sql` after the existing schema migrations. It creates isolated room tables in `tripcircle_private`; all reads and writes go through `public.tripcircle_rooms`, with authenticated identity checks and room membership checks. Phone-only profiles from the original friends planner cannot access rooms. Public previews contain title, origin, summary, dates, budget and group size; invite codes, members, plans and discussion are protected. Organizers approve requests, enforce capacity and may remove members. Accepted members can pick a shortlisted place, share messages, add packing tasks and update task completion. Organizers manage the final shortlist, itinerary and visibility. Rooms refresh every 15 seconds; public listings every 20 seconds.
+## Quick start
 
-Google sign-in needs the one-time setup in [GOOGLE_SETUP.md](GOOGLE_SETUP.md). Until the Google provider is enabled, browsing works and creation/joining clearly reports that sign-in is unavailable. Account email is not returned in room previews or member lists. Sessions use a separate auth storage key from the original planner. Google account names are suggested as editable display names.
-
-Run `tests/rooms.sql` transactionally to check private-room access, pending approval, owner controls, capacity, collaboration, removed-member access, anonymous previews and private-table isolation. No test identities or test rooms are retained. These tests do not complete a real Google sign-in.
-
-Hash routes (`#place/<id>`, `#room/<id>`, `#join/<code>`, `#my-trips`) work on GitHub Pages without server rewrites. The original friends planner is no longer included in the frontend or navigation. Historical tables and migrations remain for data continuity; rooms use Google-authenticated membership. This release does not include expense splitting, booking, public moderation tooling or verified phone numbers. Wider stranger-group discovery should include reporting/moderation and community rules before promotion.
-
-## Date polls and trip decisions
-
-Apply `supabase/decisions.sql` after the room migrations. Approved members can mark availability for multiple date options and cast one changeable stay/transport vote per category. Members can suggest stays and transport with optional HTTPS links, group quotes and notes. Only organizers can add date polls, archive options and save confirmed details. Private `room_choices`, `choice_votes` and `room_overview` tables have RLS and no direct client grants; checked RPCs enforce existing room permissions. Votes from removed members are excluded. The overview includes destination, dates, stay, transport, budget per person, meeting point/time and unfinished task count. Confirmed dates/budget update public trip previews; meeting details and options stay inside approved rooms. Confirming an option does not make a booking. Room refreshes update polls and decisions automatically.
-
-`tests/decisions.sql` checks availability, vote replacement, pending/removed access, cross-room choices, organizer confirmation, private projections, safe links and archived selections transactionally. Option removal is a reversible archive in the database; votes and historical records are retained.
-
----
-
-A shared trip planner built around a real decision: where should 6–7 friends go from Ahmedabad for a peaceful October/November break?
-
-## What works
-
-- Five clickable destination pages with authentic photographs, summaries, viewpoints, itineraries, map links and small-stay leads.
-- Mobile-first comparison with hills, forest and beach filters.
-- Public read access; a verified organizer can edit destination details, shared dates and notes.
-- Name and 10-digit number on first entry; number only to reopen the same unverified group profile across devices. No email, password, PIN or OTP. One changeable vote per number profile.
-- Shared comments and suggestions with place tags, timestamps and removal of your own posts.
-- Supabase persistence across devices; the shared plan refreshes every 20 seconds and on page focus.
-- Aggregate vote counts without exposing individual voters to public readers.
-
-The section below documents the original single-group planner, retained for compatibility. Expense splitting is future work.
-
-## Stack
-
-React, TypeScript, Vite and Supabase Postgres/Auth. Static frontend deployed through GitHub Actions to GitHub Pages. No server runtime required on GitHub Pages.
-
-## Run locally
+Requires Node.js 24.
 
 ```sh
 npm ci --ignore-scripts
-npm run dev -- --host 127.0.0.1
+npm run dev
 ```
 
-Open the printed URL ending in `/tripcircle/`. Build with `npm run build`. Node 24 is used in CI.
+Open the printed URL ending in `/tripcircle/`. The included configuration uses the existing Supabase project. For your own project, follow [database setup](docs/database.md) and [Google sign-in setup](GOOGLE_SETUP.md).
 
-`src/config.ts` contains the Relay URL and a **publishable** browser key. Publishable keys are designed for browser exposure; access is enforced by database policies. Never add a service-role key to this file, frontend code or the repository.
-
-## Database isolation and access model
-
-Existing Relay data remains in its original schemas. This project adds:
-
-| Object | Purpose | Access |
-|---|---|---|
-| `public.tripcircle_destinations` | Researched places | Public read, organizer update |
-| `public.tripcircle_plan` | Shared dates and notes | Public read, organizer update |
-| `public.tripcircle_votes` | One vote per account | Users read/write their own vote |
-| `tripcircle_private.participants` | Device token hash, name and optional legacy phone | No direct client access |
-| `tripcircle_private.guest_votes` | One vote per device profile | Token-validated RPC only |
-| `tripcircle_private.discussion` | Comments and suggestions | Token-validated writes, public projection without phones/tokens |
-| `tripcircle_private.editors` | Organizer email allowlist | No direct client access |
-
-Row-level security is enabled on every table. Narrowly scoped functions in the non-exposed private schema use `SECURITY DEFINER` to check organizer identity, validate participant device tokens, and return fixed public feed/aggregate projections. Both pin an empty search path, use fully qualified relations and revoke default public execution. Public wrappers use invoker security. Authorization never uses editable user metadata.
-
-Reading the plan, names and discussion is public. Participation uses a random 122-bit device token whose SHA-256 hash is stored in the private schema. Phone numbers are stored privately. The number-only login RPC intentionally allows anyone knowing a number to reopen that group profile; this is not verified authentication and must not protect sensitive data. The database resolves a random session token to the shared number profile. Organizer access remains separate. The browser stores only token, display name, own vote and own post IDs. Tokens never grant organizer access. Use the same number on another device to restore the profile, vote and own-post controls. Clearing storage signs out locally. Votes are informal, not a verified one-person-one-vote election. Posting is limited to five posts/hour/profile, but this is not protection against determined abuse on a public site. Authentication is shared with Relay, although this frontend uses its own session-storage key. Do not place private expenses or personal information in public plan notes.
-
-## Reproduce on a different Supabase project
-
-1. Apply `supabase/schema.sql` once to a fresh project. It is an initial schema, not an idempotent migration.
-2. Apply `supabase/participants.sql` once. Group members need no Supabase Auth account. Provision a verified organizer account separately if you need protected plan editing.
-3. Provision an organizer in SQL (do not publish your real email in a seed file):
-
-```sql
-insert into tripcircle_private.editors(email) values ('organizer@example.com');
+```sh
+npm run lint
+npm run format:check
+npm run build
+npx playwright install chromium
+npm run test:smoke
 ```
 
-4. Replace the frontend URL and publishable key in `src/config.ts`.
-5. Set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in a local shell and run `node scripts/seed.mjs`. The privileged key is used only by this server-side provisioning script.
-6. Browsing and number-profile participation never call Supabase Auth, so there is no email redirect. The separate organizer login uses an existing verified account; Relay-wide Auth settings are unchanged.
+GitHub Actions runs lint, formatting, TypeScript, a production build, a bundle budget check and desktop/mobile Playwright smoke tests before deploying to Pages.
 
-The connected Relay schema and initial data were provisioned on 2 October 2026. The organizer allowlist was provisioned separately; no actual user account was created or password set.
+## What you can do
 
-## GitHub Pages deployment
+- Explore five destination pages with real photos, viewpoints, small-stay leads, source links and itineraries.
+- Create private rooms with invite codes, or publish a trip preview others can request to join.
+- Sign in with Google. Organizers approve every joining request.
+- Shortlist places, mark date availability, suggest stays/transport and vote on options.
+- Save a final itinerary, meeting details and budget; share comments and packing tasks.
+- Tap a shortlisted photo or place name to view its details, then return to your trip.
 
-Create a public repository named `tripcircle`, push this project to `main`, then choose **Settings → Pages → Source: GitHub Actions**. The included `.github/workflows/pages.yml` builds and deploys it. The expected path is `/tripcircle/`; update `vite.config.ts` if you choose a different repository name.
+The homepage links to a read-only demo room with sample itineraries, decisions, packing and discussion. Destination pages use `/places/<id>/` URLs with pre-rendered content, individual share metadata and a sitemap. Empty public trip listings are hidden. Destinations are public; room plans and discussion are for approved members.
 
-The frontend is public; organizer-only editing is enforced by Postgres, not by hiding buttons. Content edits save to Supabase immediately and are picked up by other viewers on refresh or within 20 seconds. Code changes require the Pages workflow to finish.
+## Project structure
 
-## Validation
+```text
+src/PublicShell.tsx       Public routes; no Supabase SDK in the initial bundle
+src/PlannerApp.tsx        Lazy-loaded sign-in, room access and data operations
+src/RoomPlanner.tsx       Lazy-loaded itinerary, shortlist and collaboration UI
+src/RoomDecisions.tsx     Polls, options and final trip decisions
+src/components/          Hero, destination cards, place detail, room list, preview
+src/realtime.ts          Broadcast subscription and reconnect fallback
+src/catalogue.json       Public catalogue fallback for fast/offline browsing
+supabase/                Current database setup, content and follow-up SQL
+scripts/                 Catalogue seeding and bundle budget check
+tests/browser/          Desktop/mobile smoke tests
+```
 
-- TypeScript type-check and production build: `npm run build`.
-- Database authorization regression: `tests/permissions.sql`. Run through an administrative SQL session; it creates temporary test identities and uses a transaction that rolls everything back. Checks public reads, own-vote edits, forged-vote rejection, organizer edits and unconfirmed-organizer rejection.
-- Confirm the owner can sign in and save changes after real email verification before sending the link to the group.
+React, TypeScript, Vite and Supabase Postgres/Auth; hosted on GitHub Pages. Source is formatted with Prettier. The initial production JS is approximately **248 KB / 77 KB gzip**; the sign-in/Supabase and room-planner chunks load when needed. The old 480 KB entry is no longer used.
 
-## Research
+## Live updates status
 
-Sources live on each destination. Research was compiled on 2 October 2026. Road times are planning estimates; room availability, access, costs and seasonal waterfall flow are not confirmed. Authentic Commons photographs include credits and licence links. Ninai links to the official gallery; government photographs are not copied.
+Realtime is enabled by default. The production migration in [supabase/realtime.sql](supabase/realtime.sql) was applied and database-tested on 4 October 2026: owners and approved members can receive private room signals; pending members and outsiders cannot. Signals contain no private row content. The client refreshes via checked RPCs on changes, focus and actions; a one-minute fallback runs only if Realtime fails. Set `VITE_TRIPCIRCLE_REALTIME_ENABLED=false` to explicitly disable it. Public visitors refresh catalogue data on navigation and focus without loading the SDK. See [the access model](docs/access-model.md).
 
-Participant permission regression checks are in `tests/participants.sql`. Run transactionally through SQL editor; all test data rolls back.
+The unused number-only login endpoint has been disabled in the live database. Its historical profiles remain intact; the current frontend uses Google sign-in only.
 
-## Simple destination pages
+## Deploy
 
-After the initial schema and participant migrations, apply `supabase/simple-pages.sql`. Run the seed script to load destinations and their `details` JSON from `supabase/page-details.json`. Photos live in `public/photos/`; attribution is recorded in `CREDITS.md` and `supabase/photo-credits.json`. Hash routes such as `#place/jawhar` support share links and page refreshes on GitHub Pages. The separate Manage entry in the footer keeps organizer editing protected. Run `tests/simple-pages.sql` transactionally for no-phone participation checks.
+Set **Settings → Pages → Source → GitHub Actions**, then push to `main`. The workflow publishes `dist/` only after its checks pass. The base path is configured in `vite.config.ts`.
 
-## Number-only group profiles
+## Photos and research
 
-Apply `supabase/number-login.sql` after the earlier migrations. The name is entered once; later entries need only the 10-digit Indian national number. Private `number_profiles` maps numbers to participants; `number_sessions` maps per-device capability hashes to that participant. Shared votes and posts remain in the existing tables. Logging out revokes only that device session. Existing +91 profiles are backfilled; if old profiles had duplicate numbers, the earliest is used and the others remain historical records. Anonymous profiles without numbers remain historical unless separately migrated. `tests/number-login.sql` checks two-device restoration, synchronized votes, post ownership, logout, phone validation and private-table isolation transactionally.
+Photos are responsive WebP derivatives with individual credits and licence/source links. Only `bordi-beach.jpg` is retained for the WhatsApp/Open Graph preview; other original JPEGs are available at their source links. Dediapada links to the official gallery.
+
+Research dates to 2 October 2026. Journey times and stays are planning leads; verify access, transport, availability and price before booking. This app does not book rooms or collect payments.
