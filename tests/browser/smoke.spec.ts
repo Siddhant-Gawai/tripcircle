@@ -374,3 +374,69 @@ test("place carousel, descriptive Don photo, theme and PWA work", async ({
   ).toBeVisible();
   await page.context().setOffline(false);
 });
+
+test("homepage stays readable and composed in both themes at desktop and phone widths", async ({
+  page,
+}) => {
+  for (const scheme of ["light", "dark"] as const) {
+    for (const width of [1440, 375]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.emulateMedia({ colorScheme: scheme });
+      await page.goto("");
+      const hero = page.locator(".public-hero");
+      const contrast = await hero.evaluate((el) => {
+        const lum = (color: string) => {
+          const rgb = color
+            .match(/[\d.]+/g)!
+            .slice(0, 3)
+            .map(Number)
+            .map((c) => {
+              const s = c / 255;
+              return s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+            });
+          return rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722;
+        };
+        return [
+          el.querySelector(".hero-copy > p:not(.eyebrow)")!,
+          el.querySelector(".hero-footnote")!,
+          ...el.querySelectorAll("button"),
+        ].map((node) => {
+          let background: Element | null = node;
+          while (
+            background &&
+            ["rgba(0, 0, 0, 0)", "transparent"].includes(
+              getComputedStyle(background).backgroundColor,
+            )
+          )
+            background = background.parentElement;
+          const a = lum(getComputedStyle(node).color),
+            b = lum(getComputedStyle(background!).backgroundColor);
+          return {
+            text: node.textContent,
+            ratio: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05),
+          };
+        });
+      });
+      for (const item of contrast)
+        expect(
+          item.ratio,
+          `${scheme} ${width}px: ${item.text}`,
+        ).toBeGreaterThanOrEqual(4.5);
+      if (scheme === "dark")
+        await expect(hero).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth > innerWidth,
+      );
+      expect(overflow).toBe(false);
+      await page.screenshot({
+        path: test.info().outputPath(`homepage-${scheme}-${width}.jpg`),
+      });
+      await page
+        .getByRole("button", { name: "Join with a code", exact: true })
+        .click();
+      await expect(page.getByRole("dialog")).toBeVisible();
+      await page.getByRole("button", { name: "Close dialog" }).click();
+      await expect(page.getByRole("dialog")).toHaveCount(0);
+    }
+  }
+});

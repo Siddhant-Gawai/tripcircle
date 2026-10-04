@@ -1,3 +1,6 @@
+.public-app {
+  display: flow-root;
+}
 .public-app .mobile-tabs,
 .place-sticky-cta {
   display: none;
@@ -135,6 +138,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
+    background: #14251f;
   }
   body,
   .public-app {
@@ -254,5 +258,56 @@ body:has([aria-modal="true"]) {
   .public-app .primary:hover {
     background: #d0e8c4;
     color: #14251f;
+  }
+}
+/* Keep the landing page on the canvas; only content cards use raised surfaces. */
+@media (prefers-color-scheme: dark) {
+  .public-app header,
+  .public-app .public-hero {
+    background: transparent;
+  }
+  .public-app header {
+    border-bottom-color: #344c40;
+  }
+  .public-app .hero-copy > p:not(.eyebrow),
+  .public-app .room-preview > div > span:not(.tag),
+  .public-app .bottom-cta > p:not(.eyebrow) {
+    color: #c2d0c6;
+  }
+  .public-app .hero-copy .eyebrow,
+  .public-app .how-it-works b {
+    color: #d3b487;
+  }
+  .public-app .hero-footnote {
+    color: #b5c4ba;
+  }
+  .public-app .hero-actions button:first-child,
+  .public-app .bottom-cta button,
+  .public-app a.primary {
+    background: #bcdbab;
+    color: #14251f;
+    border-color: #bcdbab;
+  }
+  .public-app .hero-actions button:first-child:hover,
+  .public-app .bottom-cta button:hover,
+  .public-app a.primary:hover {
+    background: #d0e8c4;
+    color: #14251f;
+  }
+  .public-app .hero-actions button.secondary {
+    background: transparent;
+    color: #e4eee5;
+    border: 1px solid #738b7c;
+    box-shadow: none;
+  }
+  .public-app .hero-actions button.secondary:hover {
+    background: #294538;
+  }
+  .public-app .hero-actions button:focus-visible {
+    outline: 3px solid #e4eee5;
+    outline-offset: 4px;
+  }
+  .public-app .room-preview > div + div {
+    border-top-color: #476052;
   }
 }
