@@ -70,3 +70,9 @@ Set **Settings → Pages → Source → GitHub Actions**, then push to `main`. T
 Photos are responsive WebP derivatives with individual credits and licence/source links. Only `bordi-beach.jpg` is retained for the WhatsApp/Open Graph preview; other original JPEGs are available at their source links. Dediapada links to the official gallery.
 
 Research dates to 2 October 2026. Journey times and stays are planning leads; verify access, transport, availability and price before booking. This app does not book rooms or collect payments.
+
+### Mobile and installation
+
+Phones get safe-area bottom navigation, a sticky create button on destinations, swipable photo galleries, scrolling room sections and bottom sheets. The overview shows members and packing progress alongside trip decisions. Dark mode follows your device; reduced-motion settings are respected. Organizer invites can be opened directly in WhatsApp.
+
+The installable PWA uses 192px and 512px icons. Its service worker caches only same-origin public pages and static assets, with network-first refresh and an offline fallback. Auth callback URLs, Supabase/API responses and private room data are never cached. Room edits require a connection.

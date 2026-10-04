@@ -1,0 +1,25 @@
+{
+  "name": "TripCircle · Peaceful trips",
+  "short_name": "TripCircle",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#14251f",
+  "theme_color": "#244b3b",
+  "description": "Peaceful places and shared trip plans for your people.",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,235 @@
+.public-app .mobile-tabs,
+.place-sticky-cta {
+  display: none;
+}
+.public-app .room-tabs {
+  display: flex;
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 8px 0;
+  scrollbar-width: thin;
+}
+.room-tabs > * {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.room-tabs a {
+  padding: 12px 18px;
+  border: 1px solid #cdddbf;
+  border-radius: 999px;
+}
+.overview-facts {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px;
+}
+.overview-facts > div {
+  background: #fffdf7;
+  border: 1px solid #d9e3ce;
+  border-radius: 16px;
+  padding: 18px 14px;
+}
+[id^="room-"] {
+  scroll-margin-top: 90px;
+}
+.whatsapp-invite {
+  display: block;
+  margin-top: 12px;
+  text-align: center;
+}
+@media (max-width: 767px) {
+  .public-app {
+    padding-bottom: calc(82px + env(safe-area-inset-bottom));
+  }
+  .public-app .mobile-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: fixed;
+    z-index: 30;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    background: #fffdf7;
+    border-top: 1px solid #cdddbf;
+    box-shadow: 0 -4px 20px #142d3c12;
+  }
+  .public-app .mobile-tabs a {
+    display: grid;
+    place-items: center;
+    gap: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    min-height: 48px;
+  }
+  .mobile-tabs span {
+    font-size: 22px;
+  }
+  .place-sticky-cta {
+    display: block;
+    position: fixed;
+    z-index: 25;
+    bottom: calc(73px + env(safe-area-inset-bottom));
+    left: 16px;
+    right: 16px;
+  }
+  .place-sticky-cta button {
+    width: 100%;
+    box-shadow: 0 4px 20px #142d3c30;
+  }
+  .public-app:has(.place-sticky-cta) {
+    padding-bottom: calc(150px + env(safe-area-inset-bottom));
+  }
+  .gallery {
+    display: flex !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 14px;
+    padding-bottom: 12px;
+  }
+  .gallery figure {
+    flex: 0 0 92%;
+    margin: 0;
+    scroll-snap-align: start;
+  }
+  .gallery figure img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+  }
+  .modal-backdrop {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+  .public-app .modal {
+    width: 100%;
+    max-height: 90dvh;
+    border-radius: 24px 24px 0 0;
+    margin: 0;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+    overflow-y: auto;
+  }
+  .public-app .modal::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 4px;
+    border-radius: 8px;
+    background: #cdddbf;
+    margin: 0 auto 18px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .gallery {
+    scroll-snap-type: none;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+  body,
+  .public-app {
+    background: #14251f;
+    color: #e4eee5;
+  }
+  .public-app header,
+  .mobile-tabs,
+  .public-app .modal,
+  .panel,
+  .room-preview,
+  .trip-overview,
+  .overview-facts > div,
+  .trip-facts,
+  .gallery-placeholder,
+  .destination-card,
+  .callout {
+    background: #20372d;
+    color: #e4eee5;
+    border-color: #476052;
+  }
+  .public-app h1,
+  .public-app h2,
+  .public-app h3,
+  .public-app strong,
+  .public-app a,
+  .public-app .brand-word {
+    color: #e4eee5;
+  }
+  .public-app p,
+  .public-app .muted,
+  .public-app .subtitle,
+  .overview-facts dt,
+  .overview-facts dd small {
+    color: #b8cabd;
+  }
+  .public-app input,
+  .public-app textarea,
+  .public-app select,
+  .public-app button,
+  .room-tabs a {
+    background: #294538;
+    color: #e4eee5;
+    border-color: #607b68;
+  }
+  .public-app .primary,
+  .public-app button.primary {
+    background: #bcdbab;
+    color: #14251f;
+  }
+  .public-hero,
+  .trip-preview,
+  .detail-section,
+  .cards article {
+    background-color: #20372d;
+    border-color: #476052;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .public-app .date-option,
+  .public-app .travel-option,
+  .public-app .plan-notes,
+  .public-app .post,
+  .public-app .trip-card,
+  .public-app .place-card,
+  .public-app .feature-card,
+  .public-app .demo-overview {
+    background: #20372d;
+    border-color: #476052;
+  }
+  .public-app .filters .active,
+  .public-app .picked {
+    background: #3b5944;
+    color: #e4eee5;
+  }
+  .public-app .decision-progress,
+  .public-app .eyebrow,
+  .public-app .small,
+  .public-app .label {
+    color: #b8cabd;
+  }
+}
+.public-app .mobile-tabs a {
+  opacity: 1;
+}
+@media (prefers-color-scheme: dark) {
+  .public-app nav a,
+  .public-app nav button {
+    color: #e4eee5;
+    opacity: 1;
+  }
+}
+.public-app .modal-backdrop {
+  z-index: 100;
+}
+body:has([aria-modal="true"]) {
+  overflow: hidden;
+}

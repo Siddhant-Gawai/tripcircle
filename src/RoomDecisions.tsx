@@ -315,6 +315,23 @@ export default function RoomDecisions({
               <>
                 <dl className="overview-facts">
                   <div>
+                    <dt>Members</dt>
+                    <dd>{attendees} approved</dd>
+                  </div>
+                  <div>
+                    <dt>Packing</dt>
+                    <dd>
+                      {room.plan?.checklist.length
+                        ? Math.round(
+                            (100 *
+                              (room.plan.checklist.length - pending.length)) /
+                              room.plan.checklist.length,
+                          )
+                        : 0}
+                      % ready
+                    </dd>
+                  </div>
+                  <div>
                     <dt>Destination</dt>
                     <dd>
                       {destination ? (

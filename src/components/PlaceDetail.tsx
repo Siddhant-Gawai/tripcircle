@@ -1,5 +1,5 @@
 import type { Place } from "../types";
-import { Link, maps, photo, photoSet } from "../place-utils";
+import { Link, maps, photo, photoSet, photoCaption } from "../place-utils";
 export default function PlaceDetail({
   selected,
   placeRoom,
@@ -33,7 +33,7 @@ export default function PlaceDetail({
                 srcSet={photoSet(p)}
                 sizes="(max-width: 700px) calc(100vw - 40px), 700px"
                 decoding="async"
-                alt={p.caption}
+                alt={photoCaption(p)}
               />
               <figcaption>{p.caption}</figcaption>
             </figure>
@@ -121,6 +121,11 @@ export default function PlaceDetail({
           ))}
         </details>
       )}
+      <div className="place-sticky-cta">
+        <button className="primary" onClick={create}>
+          Create a trip room
+        </button>
+      </div>
       <div className="callout">
         <h2>Make this a trip with your people.</h2>
         <button onClick={() => create()}>Create a trip room</button>

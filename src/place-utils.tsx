@@ -9,6 +9,10 @@ const optimizedPhotos = new Set([
   "jawhar-sunset.jpg",
   "jawhar-valley.jpg",
 ]);
+export const photoCaption = (p: Photo) =>
+  p.file.startsWith("don-hills")
+    ? "Colourful camping tents on a grassy Don hillside beneath clouds at sunset"
+    : p.caption;
 export const photo = (p: Photo) =>
   `${import.meta.env.BASE_URL}photos/${optimizedPhotos.has(p.file) ? p.file.replace(".jpg", "-960.webp") : p.file}`;
 export const photoSet = (p: Photo) =>

@@ -160,7 +160,8 @@ test("shortlisted photo opens its page and returns to the same room", async ({
     capacity: 7,
     dates: "",
     budget: "",
-    organizer: false,
+    organizer: true,
+    code: "ABC123",
     status: "approved",
     members: [
       { id: null, name: "Test Member", status: "approved", organizer: false },
@@ -192,6 +193,20 @@ test("shortlisted photo opens its page and returns to the same room", async ({
     r.fulfill({ json: { choices: [], overview: {} } }),
   );
   await page.goto(`#room/${id}`);
+  const invite = page.getByRole("link", { name: "Share to WhatsApp" });
+  await expect(invite).toHaveAttribute("href", /https:\/\/wa.me\/\?text=/);
+  expect(decodeURIComponent((await invite.getAttribute("href"))!)).toContain(
+    "#join/ABC123",
+  );
+  await page.getByRole("button", { name: "Remove", exact: true }).click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.getByRole("button", { name: "Keep member" }).click();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  const roomTabs = page.getByRole("navigation", { name: "Room sections" });
+  await roomTabs.getByRole("link", { name: "Packing", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Backpacks & checklist" }),
+  ).toBeInViewport();
   const link = page.getByRole("link", {
     name: "View Jawhar: photos, viewpoints and stays",
   });
@@ -256,4 +271,94 @@ test("visitors can explore the demo without signing in or loading the planner", 
   expect(
     scripts.some((s) => s.includes("PlannerApp") || s.includes("RoomPlanner")),
   ).toBe(false);
+});
+
+test("mobile room tiles, scrolling tabs and bottom sheet stay usable", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("#demo");
+  const nav = page.getByRole("navigation", { name: "Mobile navigation" });
+  await expect(nav).toBeVisible();
+  await expect(nav.getByRole("link")).toHaveCount(4);
+  const tiles = page.locator(".demo-overview > div");
+  await expect(tiles).toHaveCount(6);
+  const boxes = await tiles.evaluateAll((els) =>
+    els.map((el) => {
+      const r = el.getBoundingClientRect();
+      return { x: r.x, y: r.y };
+    }),
+  );
+  expect(boxes[0].y).toBe(boxes[1].y);
+  expect(boxes[0].x).toBeLessThan(boxes[1].x);
+  const tabs = page.locator(".room-tabs button");
+  const positions = await tabs.evaluateAll((els) =>
+    els.map((el) => Math.round(el.getBoundingClientRect().y)),
+  );
+  expect(new Set(positions).size).toBe(1);
+  await page.getByRole("button", { name: "Discussion", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Comments & suggestions" }),
+  ).toBeVisible();
+  await page.screenshot({
+    path: test.info().outputPath("mobile-overview.jpg"),
+  });
+  await nav.getByRole("link", { name: "Create", exact: false }).click();
+  const sheet = page.getByRole("dialog");
+  await expect(sheet).toBeVisible();
+  const bounds = await sheet.boundingBox();
+  expect(Math.abs(bounds!.y + bounds!.height - 812)).toBeLessThan(2);
+  await page.getByRole("button", { name: "Close dialog" }).click();
+  await expect(sheet).toHaveCount(0);
+});
+
+test("place carousel, descriptive Don photo, theme and PWA work", async ({
+  page,
+  request,
+}) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("#place/jawhar");
+  await expect(page.locator(".place-sticky-cta button")).toBeVisible();
+  const gallery = page.locator(".gallery");
+  const layout = await gallery.evaluate((el) => ({
+    width: el.clientWidth,
+    scroll: el.scrollWidth,
+    snap: getComputedStyle(el).scrollSnapType,
+  }));
+  expect(layout.scroll).toBeGreaterThan(layout.width);
+  expect(layout.snap).toContain("mandatory");
+  await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "dark" });
+  await expect(gallery).toHaveCSS("scroll-snap-type", "none");
+  await expect(page.locator("body")).toHaveCSS(
+    "background-color",
+    "rgb(20, 37, 31)",
+  );
+  await page.screenshot({
+    path: test.info().outputPath("mobile-dark.jpg"),
+  });
+  await page.goto("#place/don-dang");
+  await expect(page.locator(".gallery img").first()).toHaveAttribute(
+    "alt",
+    /Colourful camping tents.*sunset/,
+  );
+  const manifestURL = await page
+    .locator('link[rel="manifest"]')
+    .getAttribute("href");
+  const manifest = await (await request.get(manifestURL!)).json();
+  expect(manifest.display).toBe("standalone");
+  expect(manifest.icons.map((i: { sizes: string }) => i.sizes)).toEqual([
+    "192x192",
+    "512x512",
+  ]);
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+  });
+  await page.reload();
+  await page.waitForFunction(() => !!navigator.serviceWorker.controller);
+  await page.context().setOffline(true);
+  await page.reload();
+  await expect(
+    page.getByRole("heading", { name: "Don village + Dang", exact: true }),
+  ).toBeVisible();
+  await page.context().setOffline(false);
 });

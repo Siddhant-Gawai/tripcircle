@@ -1,3 +1,4 @@
+import MobileNav from "./components/MobileNav";
 import { lazy, Suspense, useEffect, useState } from "react";
 import catalogue from "./catalogue.json";
 import type { Place, Room } from "./types";
@@ -66,6 +67,7 @@ export default function PublicShell() {
       <Suspense
         fallback={
           <div className="public-app">
+            <MobileNav />
             <Header />
             <main>
               <p role="status">Opening your trips…</p>
@@ -93,6 +95,7 @@ export default function PublicShell() {
   };
   return (
     <div className="public-app">
+      <MobileNav />
       <Header />
       <main>
         {notice && (

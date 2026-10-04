@@ -3,4 +3,12 @@ import { createRoot } from "react-dom/client";
 import PublicApp from "./PublicShell";
 import "./style.css";
 import "./public.css";
+import "./mobile.css";
+if (import.meta.env.PROD && "serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    void navigator.serviceWorker
+      .register(`${import.meta.env.BASE_URL}sw.js`)
+      .catch(() => {});
+  });
+}
 createRoot(document.getElementById("root")!).render(<PublicApp />);

@@ -1,5 +1,5 @@
 import type { Place } from "../types";
-import { photo, photoSet } from "../place-utils";
+import { photo, photoSet, photoCaption } from "../place-utils";
 export default function DestinationCard({ place: p }: { place: Place }) {
   return (
     <article className="card" key={p.id}>
@@ -14,7 +14,7 @@ export default function DestinationCard({ place: p }: { place: Place }) {
             srcSet={photoSet(p.details.photos[0])}
             sizes="(max-width: 700px) calc(100vw - 40px), (max-width: 1000px) 45vw, 360px"
             decoding="async"
-            alt={p.details.photos[0].caption}
+            alt={photoCaption(p.details.photos[0])}
             loading="lazy"
           />
         ) : (

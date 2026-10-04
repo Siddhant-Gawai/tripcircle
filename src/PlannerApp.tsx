@@ -1,3 +1,4 @@
+import MobileNav from "./components/MobileNav";
 import DemoRoom from "./components/DemoRoom";
 import React, { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { createClient, type Session } from "@supabase/supabase-js";
@@ -448,6 +449,7 @@ export default function PlannerApp() {
 
   return (
     <div className="public-app">
+      <MobileNav />
       <header>
         <a href="#" className="brand">
           <span className="brandmark" aria-hidden="true">

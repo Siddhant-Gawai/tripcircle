@@ -14,12 +14,22 @@ export default function DemoRoom({ places }: { places: Place[] }) {
         See how your group can plan together. These are sample people and
         decisions.
       </p>
-      <div className="room-preview">
-        <span>3 days · 6 friends · From Ahmedabad</span>
-        <strong>Jawhar · Dates to decide</strong>
-        <p>A small homestay, slow walks and enough time to do nothing.</p>
-      </div>
-      <div className="filters" aria-label="Demo room sections">
+      <dl className="overview-facts demo-overview" aria-label="Trip overview">
+        {[
+          ["Dates", "3 days · To decide"],
+          ["Members", "6 sample friends"],
+          ["Budget / person", "₹6,000 · Sample"],
+          ["Stay / transport", "Homestay · Shared car"],
+          ["Packing", "0% ready"],
+          ["Meeting point", "Ahmedabad · To decide"],
+        ].map(([label, value]) => (
+          <div key={label}>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))}
+      </dl>
+      <div className="filters room-tabs" aria-label="Demo room sections">
         {["Plan", "Places", "Decisions", "Packing", "Discussion"].map((t) => (
           <button
             key={t}
