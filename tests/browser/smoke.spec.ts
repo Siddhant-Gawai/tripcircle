@@ -336,6 +336,18 @@ test("place carousel, descriptive Don photo, theme and PWA work", async ({
   await page.screenshot({
     path: test.info().outputPath("mobile-dark.jpg"),
   });
+  await expect(
+    page.getByRole("navigation", { name: "Mobile navigation" }),
+  ).toHaveCSS("background-color", "rgb(32, 55, 45)");
+  await page.goto("#demo");
+  await expect(page.locator(".demo-overview > div").first()).toHaveCSS(
+    "background-color",
+    "rgb(32, 55, 45)",
+  );
+  await expect(page.locator(".room-preview").first()).toHaveCSS(
+    "background-color",
+    "rgb(32, 55, 45)",
+  );
   await page.goto("#place/don-dang");
   await expect(page.locator(".gallery img").first()).toHaveAttribute(
     "alt",

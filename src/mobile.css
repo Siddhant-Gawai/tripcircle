@@ -142,16 +142,16 @@
     color: #e4eee5;
   }
   .public-app header,
-  .mobile-tabs,
+  .public-app .mobile-tabs,
   .public-app .modal,
-  .panel,
-  .room-preview,
-  .trip-overview,
-  .overview-facts > div,
-  .trip-facts,
-  .gallery-placeholder,
-  .destination-card,
-  .callout {
+  .public-app .panel,
+  .public-app .room-preview,
+  .public-app .trip-overview,
+  .public-app .overview-facts > div,
+  .public-app .trip-facts,
+  .public-app .gallery-placeholder,
+  .public-app .destination-card,
+  .public-app .callout {
     background: #20372d;
     color: #e4eee5;
     border-color: #476052;
@@ -167,15 +167,15 @@
   .public-app p,
   .public-app .muted,
   .public-app .subtitle,
-  .overview-facts dt,
-  .overview-facts dd small {
+  .public-app .overview-facts dt,
+  .public-app .overview-facts dd small {
     color: #b8cabd;
   }
   .public-app input,
   .public-app textarea,
   .public-app select,
   .public-app button,
-  .room-tabs a {
+  .public-app .room-tabs a {
     background: #294538;
     color: #e4eee5;
     border-color: #607b68;
@@ -185,10 +185,10 @@
     background: #bcdbab;
     color: #14251f;
   }
-  .public-hero,
-  .trip-preview,
-  .detail-section,
-  .cards article {
+  .public-app .public-hero,
+  .public-app .trip-preview,
+  .public-app .detail-section,
+  .public-app .cards article {
     background-color: #20372d;
     border-color: #476052;
   }
@@ -205,7 +205,7 @@
     background: #20372d;
     border-color: #476052;
   }
-  .public-app .filters .active,
+  .public-app .filters button.active,
   .public-app .picked {
     background: #3b5944;
     color: #e4eee5;
@@ -232,4 +232,27 @@
 }
 body:has([aria-modal="true"]) {
   overflow: hidden;
+}
+@media (prefers-color-scheme: dark) {
+  .public-app .card,
+  .public-app .room-card,
+  .public-app .callout,
+  .public-app .how-it-works,
+  .public-app .bottom-cta,
+  .public-app .tag,
+  .public-app .chips span {
+    background: #20372d;
+    color: #e4eee5;
+    border-color: #476052;
+  }
+  .public-app .card-meta,
+  .public-app .description,
+  .public-app .open-place,
+  .public-app .how-it-works span {
+    color: #b8cabd;
+  }
+  .public-app .primary:hover {
+    background: #d0e8c4;
+    color: #14251f;
+  }
 }
