@@ -6,6 +6,10 @@ Peaceful places and one shared plan for a small group. Browse destinations from 
 
 ![TripCircle homepage](docs/homepage.png)
 
+## Small patch · 5 October 2026
+
+A successful retry now clears the previous trip-decisions error after reloading the polls and overview. If a retry fails, the latest error remains visible. To check manually, interrupt the connection while loading trip decisions, restore it, then choose **Retry** and confirm the error disappears when the data loads.
+
 ## Quick start
 
 Requires Node.js 24.

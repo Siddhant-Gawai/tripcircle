@@ -165,7 +165,10 @@ export default function RoomDecisions({
           <button
             onClick={() =>
               request("view")
-                .then(setData)
+                .then((d) => {
+                  setData(d);
+                  setError("");
+                })
                 .catch((e) => setError(e.message))
             }
           >
