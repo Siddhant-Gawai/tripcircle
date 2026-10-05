@@ -27,6 +27,7 @@ export default function Header() {
       </a>
       <nav aria-label="Main navigation">
         <a href="#places">Places</a>
+        <a href="#search">Ask TripCircle</a>
         <a href="#trips">Trips</a>
         <a href="#my-trips">My trips</a>
         <a className="text-button" href="#signin">

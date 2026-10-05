@@ -9,6 +9,8 @@ import PlaceDetail from "./components/PlaceDetail";
 import DestinationCard from "./components/DestinationCard";
 import RoomCard from "./components/RoomCard";
 import { subscribeUpdates } from "./realtime";
+import catalogue from "./catalogue.json";
+const PlaceSearch = lazy(() => import("./components/PlaceSearch"));
 const RoomPlanner = lazy(() => import("./RoomPlanner"));
 const db = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: { storageKey: "tripcircle-public-auth", flowType: "pkce" },
@@ -35,6 +37,25 @@ export default function PlannerApp() {
     [dates, setDates] = useState("");
   const [syncWarning, setSyncWarning] = useState("");
   const [placeRoom, setPlaceRoom] = useState<string | null>(null);
+  const [saved, setSaved] = useState<string[]>([]);
+  useEffect(() => {
+    let stopped = false;
+    setSaved([]);
+    if (session)
+      db.from("tripcircle_saved_places")
+        .select("destination_id")
+        .then(({ data, error }) => {
+          if (!stopped) {
+            if (error)
+              setError("Saved places could not load. Please try again later.");
+            else setSaved((data || []).map((p) => p.destination_id));
+          }
+        });
+    else setSaved([]);
+    return () => {
+      stopped = true;
+    };
+  }, [session?.user.id]);
   const modalRef = useRef<HTMLDivElement>(null),
     opener = useRef<HTMLElement | null>(null);
   const displayName =
@@ -168,7 +189,9 @@ export default function PlannerApp() {
         if (
           pending?.kind === "route" &&
           typeof pending.route === "string" &&
-          /^#(places|trips|my-trips|room\/[a-f0-9-]+)$/.test(pending.route)
+          /^#(search|places|trips|my-trips|room\/[a-f0-9-]+)$/.test(
+            pending.route,
+          )
         )
           location.hash = pending.route;
       } catch {
@@ -241,8 +264,12 @@ export default function PlannerApp() {
   useEffect(() => {
     if (route === "#create") open("create");
     if (route === "#signin" && authReady) {
-      if (session) location.hash = "my-trips";
-      else open("auth");
+      if (session) {
+        location.hash = sessionStorage.getItem("tripcircle-search-return")
+          ? "search"
+          : "my-trips";
+        sessionStorage.removeItem("tripcircle-search-return");
+      } else open("auth");
     }
     if (route.startsWith("#join/")) {
       setCode(route.slice(6));
@@ -288,8 +315,16 @@ export default function PlannerApp() {
     setBusy(true);
     sessionStorage.setItem(
       "tripcircle-next",
-      JSON.stringify(next || { kind: "route", route: location.hash }),
+      JSON.stringify(
+        next || {
+          kind: "route",
+          route: sessionStorage.getItem("tripcircle-search-return")
+            ? "#search"
+            : location.hash,
+        },
+      ),
     );
+    sessionStorage.removeItem("tripcircle-search-return");
     const { error } = await db.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -477,6 +512,7 @@ export default function PlannerApp() {
         </a>
         <nav aria-label="Main navigation">
           <a href="#places">Places</a>
+          <a href="#search">Ask TripCircle</a>
           <a href="#trips">Trips</a>
           {session ? (
             <>
@@ -526,7 +562,65 @@ export default function PlannerApp() {
             </button>
           </div>
         )}
-        {route === "#demo" ? (
+        {route === "#search" ? (
+          <Suspense fallback={<p role="status">Opening place search…</p>}>
+            <PlaceSearch
+              places={places.length ? places : (catalogue as Place[])}
+              signedIn={!!session}
+              saved={saved}
+              trips={mine
+                .filter((r) => r.organizer)
+                .map((r) => ({ id: r.id, title: r.title }))}
+              addToTrip={async (place, trip) => {
+                const detail = await rpc("view", trip);
+                if (!detail.plan?.destinations.includes(place))
+                  await rpc("shortlist", trip, { destination: place });
+                location.hash = `room/${trip}`;
+              }}
+              ask={async (messages) => {
+                const { data: auth } = await db.auth.getSession();
+                const response = await fetch(
+                  `${SUPABASE_URL}/functions/v1/place-search`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      apikey: SUPABASE_PUBLISHABLE_KEY,
+                      Authorization: `Bearer ${auth.session?.access_token || ""}`,
+                    },
+                    body: JSON.stringify({ messages }),
+                    signal: AbortSignal.timeout(40000),
+                  },
+                );
+                const result = await response.json();
+                if (!response.ok)
+                  throw Error(
+                    result.message || "Search is temporarily unavailable.",
+                  );
+                return result;
+              }}
+              save={async (id, remove) => {
+                if (!session) throw Error("Sign in to save places.");
+                const result = remove
+                  ? await db
+                      .from("tripcircle_saved_places")
+                      .delete()
+                      .eq("user_id", session.user.id)
+                      .eq("destination_id", id)
+                  : await db
+                      .from("tripcircle_saved_places")
+                      .insert({ user_id: session.user.id, destination_id: id });
+                if (result.error && result.error.code !== "23505")
+                  throw Error("Could not save this change. Please try again.");
+                setSaved((current) =>
+                  remove
+                    ? current.filter((p) => p !== id)
+                    : [...new Set([...current, id])],
+                );
+              }}
+            />
+          </Suspense>
+        ) : route === "#demo" ? (
           <DemoRoom places={places} />
         ) : selected ? (
           <PlaceDetail

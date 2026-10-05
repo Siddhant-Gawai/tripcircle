@@ -28,6 +28,7 @@ jobs:
       - run: npm run build
         env:
           VITE_TRIPCIRCLE_REALTIME_ENABLED: ${{ vars.VITE_TRIPCIRCLE_REALTIME_ENABLED }}
+      - run: node --test tests/server/place-search.test.mjs
       - run: npm run check:bundle
       - run: npx playwright install --with-deps chromium
       - run: npm run test:smoke

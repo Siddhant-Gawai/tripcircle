@@ -1,0 +1,3 @@
+[functions.place-search]
+# The function validates the bearer token against Auth before any model call.
+verify_jwt = false

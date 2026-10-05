@@ -10,6 +10,14 @@ Peaceful places and one shared plan for a small group. Browse destinations from 
 
 A successful retry now clears the previous trip-decisions error after reloading the polls and overview. If a retry fails, the latest error remains visible. To check manually, interrupt the connection while loading trip decisions, restore it, then choose **Retry** and confirm the error disappears when the data loads.
 
+## Ask TripCircle
+
+Open **Ask TripCircle** (`#search`) to find destinations through chat and see the matches as photo cards. Signed-out visitors can search the catalogue without a model call. Signed-in visitors can ask follow-up questions, save destinations privately across devices and add saved places to a room they organize. **Use catalogue search** remains available if the AI quota or provider is unavailable.
+
+The Supabase `place-search` Edge Function calls Groq's open Qwen model with strict structured output. It retrieves the catalogue itself, accepts only known destination IDs, and never creates destinations from model text. Photos, credits, source links and trip facts come from the existing records. This first version covers five researched destinations from Ahmedabad; it does not browse the web or verify current prices and bookings.
+
+Setup and limits are documented in [place search setup](docs/place-search.md). The connected Relay database and Edge Function have been deployed. Keep `GROQ_API_KEY` exclusively in Edge Function secrets.
+
 ## Quick start
 
 Requires Node.js 24.

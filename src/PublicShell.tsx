@@ -10,6 +10,7 @@ import PlaceDetail from "./components/PlaceDetail";
 import RoomList from "./components/RoomList";
 import TripPreview from "./components/TripPreview";
 import DemoRoom from "./components/DemoRoom";
+const PlaceSearch = lazy(() => import("./components/PlaceSearch"));
 const initialRoute = () =>
   location.hash ||
   (location.pathname.match(/\/places\/([^/]+)\/?$/)
@@ -18,7 +19,7 @@ const initialRoute = () =>
 const PlannerApp = lazy(() => import("./PlannerApp"));
 function needsPlanner(route: string) {
   return (
-    /^#(room\/|join\/|my-trips|create|signin)/.test(route) ||
+    /^#(search|room\/|join\/|my-trips|create|signin)/.test(route) ||
     new URLSearchParams(location.search).has("code")
   );
 }
@@ -103,7 +104,11 @@ export default function PublicShell() {
             {notice}
           </p>
         )}
-        {route === "#demo" ? (
+        {route === "#search" ? (
+          <Suspense fallback={<p role="status">Opening place search…</p>}>
+            <PlaceSearch places={places} />
+          </Suspense>
+        ) : route === "#demo" ? (
           <DemoRoom places={places} />
         ) : selected ? (
           <PlaceDetail selected={selected} copy={copy} create={create} />

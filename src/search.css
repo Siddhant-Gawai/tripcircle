@@ -1,0 +1,78 @@
+.place-search {
+  max-width: 1080px;
+  margin: 32px auto;
+}
+.place-search h1 {
+  font-size: clamp(30px, 5vw, 48px);
+}
+.search-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0;
+}
+.search-conversation {
+  max-height: 360px;
+  overflow-y: auto;
+}
+.search-turn {
+  padding: 16px 20px;
+  border: 1px solid #d0dbcf;
+  border-radius: 16px;
+  white-space: pre-wrap;
+  max-width: 90%;
+}
+.search-turn strong {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.search-turn.user {
+  margin-left: auto;
+  background: #e8efe0;
+}
+.search-compose {
+  display: grid;
+  gap: 12px;
+  margin: 24px 0;
+}
+.search-compose label {
+  font-weight: 600;
+}
+.search-compose textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #adbfae;
+  font: inherit;
+  resize: vertical;
+}
+.search-compose button {
+  justify-self: end;
+}
+.search-results > div,
+.saved-places .cards > div {
+  min-width: 0;
+}
+.search-reason {
+  padding: 0 8px;
+}
+.saved-places {
+  margin: 36px 0;
+}
+@media (prefers-color-scheme: dark) {
+  .search-turn {
+    border-color: #445c52;
+    background: #142b23;
+    color: #e8f0e8;
+  }
+  .search-turn.user {
+    background: #284437;
+  }
+  .search-compose textarea {
+    background: #142b23;
+    color: #e8f0e8;
+    border-color: #668470;
+  }
+}
