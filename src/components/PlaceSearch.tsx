@@ -53,13 +53,16 @@ export default function PlaceSearch({
       if (signedIn && ask && !catalogueOnly) reply = await ask(next);
       else {
         const words = text.toLowerCase().match(/[a-z]{3,}/g) || [];
-        const categories = /beach|coast|sea|shore/.test(text.toLowerCase())
-          ? ["Beach"]
-          : /forest|waterfall|woods/.test(text.toLowerCase())
-            ? ["Forest"]
-            : /hill|mountain|valley/.test(text.toLowerCase())
-              ? ["Hills"]
-              : [];
+        const categories =
+          /\b(beach(?:es)?|coast(?:al)?|sea(?:side)?|shores?)\b/.test(
+            text.toLowerCase(),
+          )
+            ? ["Beach"]
+            : /\b(forests?|waterfalls?|woods?)\b/.test(text.toLowerCase())
+              ? ["Forest"]
+              : /\b(hills?|mountains?|valleys?)\b/.test(text.toLowerCase())
+                ? ["Hills"]
+                : [];
         const matches = places.filter((p) =>
           categories.length
             ? categories.includes(p.landscape)

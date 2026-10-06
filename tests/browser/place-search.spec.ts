@@ -42,6 +42,23 @@ test("catalogue search returns cards without model calls and requests sign-in to
     ),
   ).toBe("yes");
 });
+test("catalogue categories match whole words and keep plural searches", async ({
+  page,
+}) => {
+  await page.goto("#search");
+  const query = page.getByRole("textbox", {
+    name: "What kind of trip would you like?",
+  });
+  await query.fill("research Jawhar");
+  await page.getByRole("button", { name: "Find places", exact: true }).click();
+  await expect(page.locator(".search-results .card")).toHaveCount(1);
+  await expect(page.locator(".search-results")).toContainText("Jawhar");
+  await query.fill("quiet beaches");
+  await page.getByRole("button", { name: "Find places", exact: true }).click();
+  await expect(page.locator(".search-results .card")).toHaveCount(2);
+  await expect(page.locator(".search-results")).toContainText("Bordi");
+});
+
 test("AI follow-ups keep context, save across reloads and add to a trip", async ({
   page,
 }) => {
