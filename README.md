@@ -10,6 +10,8 @@ Peaceful places and one shared plan for a small group. Browse destinations from 
 
 Catalogue search now matches landscape keywords as whole words. Searching “research Jawhar” returns Jawhar instead of accidentally matching “sea” inside “research” and showing beaches. Plural searches such as “beaches”, “hills” and “waterfalls” continue to work. Desktop and mobile regression checks cover destination-name searches and plural categories.
 
+A second small patch includes every landscape requested in a catalogue search: “beaches or hills” now returns both coastal and hill destinations instead of only the first category. Desktop and mobile regression checks cover this combined search.
+
 ## Small patch · 5 October 2026
 
 A successful retry now clears the previous trip-decisions error after reloading the polls and overview. If a retry fails, the latest error remains visible. To check manually, interrupt the connection while loading trip decisions, restore it, then choose **Retry** and confirm the error disappears when the data loads.

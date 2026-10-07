@@ -57,6 +57,11 @@ test("catalogue categories match whole words and keep plural searches", async ({
   await page.getByRole("button", { name: "Find places", exact: true }).click();
   await expect(page.locator(".search-results .card")).toHaveCount(2);
   await expect(page.locator(".search-results")).toContainText("Bordi");
+  await query.fill("beaches or hills");
+  await page.getByRole("button", { name: "Find places", exact: true }).click();
+  await expect(page.locator(".search-results .card")).toHaveCount(4);
+  await expect(page.locator(".search-results")).toContainText("Jawhar");
+  await expect(page.locator(".search-results")).toContainText("Bordi");
 });
 
 test("AI follow-ups keep context, save across reloads and add to a trip", async ({
