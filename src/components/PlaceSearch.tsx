@@ -45,6 +45,7 @@ export default function PlaceSearch({
       { role: "user" as const, content: text.trim() },
     ].slice(-8);
     setTurns(next);
+    setResults([]);
     setQuery("");
     setError("");
     setBusy(true);
@@ -86,6 +87,8 @@ export default function PlaceSearch({
       );
       setTurns([...next, { role: "assistant", content: reply.message }]);
     } catch (e) {
+      setTurns(turns);
+      setQuery(text.trim());
       setError((e as Error).message);
     } finally {
       setBusy(false);

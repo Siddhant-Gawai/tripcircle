@@ -129,8 +129,14 @@ test("AI follow-ups keep context, save across reloads and add to a trip", async 
   await page.route("**/rest/v1/rpc/tripcircle_decisions", (r) =>
     r.fulfill({ json: { choices: [], overview: {} } }),
   );
+  let failSearch = false;
   await page.route("**/functions/v1/place-search", (r) => {
     queries = r.request().postDataJSON().messages;
+    if (failSearch)
+      return r.fulfill({
+        status: 503,
+        json: { message: "Search temporarily unavailable." },
+      });
     return r.fulfill({
       json: {
         message:
@@ -156,6 +162,25 @@ test("AI follow-ups keep context, save across reloads and add to a trip", async 
   await page.getByRole("button", { name: "Find places", exact: true }).click();
   await expect(page.locator(".search-conversation .assistant")).toHaveCount(2);
   expect(queries).toHaveLength(3);
+  failSearch = true;
+  const query = page.getByRole("textbox", {
+    name: "What kind of trip would you like?",
+  });
+  await query.fill("Any forest options?");
+  await page.getByRole("button", { name: "Find places", exact: true }).click();
+  await expect(page.getByRole("alert")).toContainText(
+    "Search temporarily unavailable.",
+  );
+  await expect(page.locator(".search-results .card")).toHaveCount(0);
+  await expect(query).toHaveValue("Any forest options?");
+  await expect(page.locator(".search-conversation .user")).toHaveCount(2);
+  failSearch = false;
+  await page.getByRole("button", { name: "Find places", exact: true }).click();
+  await expect(page.locator(".search-results .card")).toHaveCount(1);
+  await expect(page.locator(".search-conversation .user")).toHaveCount(3);
+  expect(queries).toHaveLength(5);
+  await expect(query).toBeEmpty();
+  await expect(page.locator(".place-search [role=alert]")).toHaveCount(0);
   await page.getByRole("button", { name: "Save place", exact: true }).click();
   await expect(page.locator(".saved-places .card")).toHaveCount(1);
   await page.reload();

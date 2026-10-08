@@ -6,6 +6,10 @@ Peaceful places and one shared plan for a small group. Browse destinations from 
 
 ![TripCircle homepage](docs/homepage.png)
 
+## Small patch · 9 October 2026
+
+Starting a new place search now clears the previous result cards. If AI search fails, the question returns to the input for retry and the failed turn is removed from chat history. This prevents old recommendations from appearing to answer a failed search and avoids duplicate questions when retrying. Desktop and mobile regression checks cover failure and recovery.
+
 ## Small patch · 7 October 2026
 
 Catalogue search now matches landscape keywords as whole words. Searching “research Jawhar” returns Jawhar instead of accidentally matching “sea” inside “research” and showing beaches. Plural searches such as “beaches”, “hills” and “waterfalls” continue to work. Desktop and mobile regression checks cover destination-name searches and plural categories.
