@@ -105,6 +105,19 @@ export default function PlaceSearch({
         Tell us what you have in mind. Search our five researched destinations
         from Ahmedabad, then save your favourites.
       </p>
+      <button
+        disabled={
+          busy || saving !== null || (!turns.length && !query && !error)
+        }
+        onClick={() => {
+          setTurns([]);
+          setResults([]);
+          setQuery("");
+          setError("");
+        }}
+      >
+        Clear conversation
+      </button>
       {!signedIn && (
         <p className="auth-status">
           Catalogue search is ready.{" "}

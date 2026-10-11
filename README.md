@@ -6,6 +6,10 @@ Peaceful places and one shared plan for a small group. Browse destinations from 
 
 ![TripCircle homepage](docs/homepage.png)
 
+## Small patch · 11 October 2026
+
+Place search now includes **Clear conversation** to start fresh without reloading. It clears chat history, result cards, the draft question and search errors while keeping saved places and the selected search mode. The button is disabled during active searches or save operations. Desktop and mobile regression checks verify clearing and starting a new search.
+
 ## Small patch · 9 October 2026
 
 Starting a new place search now clears the previous result cards. If AI search fails, the question returns to the input for retry and the failed turn is removed from chat history. This prevents old recommendations from appearing to answer a failed search and avoids duplicate questions when retrying. Desktop and mobile regression checks cover failure and recovery.

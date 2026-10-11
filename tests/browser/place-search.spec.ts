@@ -62,6 +62,23 @@ test("catalogue categories match whole words and keep plural searches", async ({
   await expect(page.locator(".search-results .card")).toHaveCount(4);
   await expect(page.locator(".search-results")).toContainText("Jawhar");
   await expect(page.locator(".search-results")).toContainText("Bordi");
+  await query.fill("A draft question");
+  await page
+    .getByRole("button", { name: "Clear conversation", exact: true })
+    .click();
+  await expect(query).toBeEmpty();
+  await expect(page.locator(".search-results .card")).toHaveCount(0);
+  await expect(page.locator(".search-conversation .search-turn")).toHaveCount(
+    0,
+  );
+  await expect(
+    page.getByRole("button", { name: "Clear conversation", exact: true }),
+  ).toBeDisabled();
+  await page
+    .getByRole("button", { name: "Hills for three days", exact: true })
+    .click();
+  await expect(page.locator(".search-results .card")).toHaveCount(2);
+  await expect(page.locator(".search-conversation .user")).toHaveCount(1);
 });
 
 test("AI follow-ups keep context, save across reloads and add to a trip", async ({
