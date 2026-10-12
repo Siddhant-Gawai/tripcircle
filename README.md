@@ -6,6 +6,10 @@ Peaceful places and one shared plan for a small group. Browse destinations from 
 
 ![TripCircle homepage](docs/homepage.png)
 
+## Small patch · 12 October 2026
+
+Clearing a place-search conversation now returns keyboard focus to the question field, so you can immediately type a new search. Desktop and mobile regression checks verify the focus transition.
+
 ## Small patch · 11 October 2026
 
 Place search now includes **Clear conversation** to start fresh without reloading. It clears chat history, result cards, the draft question and search errors while keeping saved places and the selected search mode. The button is disabled during active searches or save operations. Desktop and mobile regression checks verify clearing and starting a new search.

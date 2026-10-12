@@ -67,6 +67,7 @@ test("catalogue categories match whole words and keep plural searches", async ({
     .getByRole("button", { name: "Clear conversation", exact: true })
     .click();
   await expect(query).toBeEmpty();
+  await expect(query).toBeFocused();
   await expect(page.locator(".search-results .card")).toHaveCount(0);
   await expect(page.locator(".search-conversation .search-turn")).toHaveCount(
     0,

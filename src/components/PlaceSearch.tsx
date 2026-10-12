@@ -31,6 +31,7 @@ export default function PlaceSearch({
     [saving, setSaving] = useState<string | null>(null);
   const [catalogueOnly, setCatalogueOnly] = useState(false);
   const end = useRef<HTMLDivElement>(null);
+  const queryInput = useRef<HTMLTextAreaElement>(null);
   function signIn() {
     sessionStorage.setItem("tripcircle-search-return", "yes");
     location.hash = "signin";
@@ -114,6 +115,7 @@ export default function PlaceSearch({
           setResults([]);
           setQuery("");
           setError("");
+          queryInput.current?.focus();
         }}
       >
         Clear conversation
@@ -183,6 +185,7 @@ export default function PlaceSearch({
       >
         <label htmlFor="place-query">What kind of trip would you like?</label>
         <textarea
+          ref={queryInput}
           id="place-query"
           required
           maxLength={600}
