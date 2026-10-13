@@ -6,6 +6,10 @@ Peaceful places and one shared plan for a small group. Browse destinations from 
 
 ![TripCircle homepage](docs/homepage.png)
 
+## Small patch · 13 October 2026
+
+If an AI search fails while you are drafting the next question, that new draft is now preserved. The failed question is restored only when the input is empty. Desktop and mobile regression checks cover a delayed failure while typing.
+
 ## Small patch · 12 October 2026
 
 Clearing a place-search conversation now returns keyboard focus to the question field, so you can immediately type a new search. Desktop and mobile regression checks verify the focus transition.

@@ -148,13 +148,17 @@ test("AI follow-ups keep context, save across reloads and add to a trip", async 
     r.fulfill({ json: { choices: [], overview: {} } }),
   );
   let failSearch = false;
-  await page.route("**/functions/v1/place-search", (r) => {
+  let failureGate: Promise<void> | null = null;
+  let releaseFailure = () => {};
+  await page.route("**/functions/v1/place-search", async (r) => {
     queries = r.request().postDataJSON().messages;
-    if (failSearch)
+    if (failSearch) {
+      if (failureGate) await failureGate;
       return r.fulfill({
         status: 503,
         json: { message: "Search temporarily unavailable." },
       });
+    }
     return r.fulfill({
       json: {
         message:
@@ -192,6 +196,20 @@ test("AI follow-ups keep context, save across reloads and add to a trip", async 
   await expect(page.locator(".search-results .card")).toHaveCount(0);
   await expect(query).toHaveValue("Any forest options?");
   await expect(page.locator(".search-conversation .user")).toHaveCount(2);
+  failureGate = new Promise<void>((resolve) => {
+    releaseFailure = resolve;
+  });
+  await page.getByRole("button", { name: "Find places", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Searching…", exact: true }),
+  ).toBeDisabled();
+  await query.fill("A new question drafted while waiting");
+  releaseFailure();
+  await expect(
+    page.getByRole("button", { name: "Find places", exact: true }),
+  ).toBeEnabled();
+  await expect(query).toHaveValue("A new question drafted while waiting");
+  await query.fill("Any forest options?");
   failSearch = false;
   await page.getByRole("button", { name: "Find places", exact: true }).click();
   await expect(page.locator(".search-results .card")).toHaveCount(1);

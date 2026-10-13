@@ -89,7 +89,7 @@ export default function PlaceSearch({
       setTurns([...next, { role: "assistant", content: reply.message }]);
     } catch (e) {
       setTurns(turns);
-      setQuery(text.trim());
+      setQuery((current) => (current.trim() ? current : text.trim()));
       setError((e as Error).message);
     } finally {
       setBusy(false);
