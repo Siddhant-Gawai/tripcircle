@@ -187,6 +187,13 @@ export default function PlaceSearch({
         <textarea
           ref={queryInput}
           id="place-query"
+          aria-describedby="place-query-shortcut"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+              e.preventDefault();
+              if (!busy) e.currentTarget.form?.requestSubmit();
+            }
+          }}
           required
           maxLength={600}
           rows={2}
@@ -194,6 +201,9 @@ export default function PlaceSearch({
           onChange={(e) => setQuery(e.target.value)}
           placeholder="A quiet beach from Ahmedabad for three days…"
         />
+        <p id="place-query-shortcut" className="small muted">
+          Ctrl+Enter or ⌘+Enter to search. Enter adds a new line.
+        </p>
         <button className="primary" disabled={busy || !query.trim()}>
           {busy ? "Searching…" : "Find places"}
         </button>

@@ -6,6 +6,10 @@ Peaceful places and one shared plan for a small group. Browse destinations from 
 
 ![TripCircle homepage](docs/homepage.png)
 
+## Small patch · 14 October 2026
+
+Place search now supports **Ctrl+Enter** and **⌘+Enter** to submit a question. Enter alone still adds a new line. The shortcut uses normal form validation and does not submit another request while a search is running. Desktop and mobile regression checks cover both shortcuts and multiline input.
+
 ## Small patch · 13 October 2026
 
 If an AI search fails while you are drafting the next question, that new draft is now preserved. The failed question is restored only when the input is empty. Desktop and mobile regression checks cover a delayed failure while typing.

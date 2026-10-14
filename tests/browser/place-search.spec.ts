@@ -50,11 +50,13 @@ test("catalogue categories match whole words and keep plural searches", async ({
     name: "What kind of trip would you like?",
   });
   await query.fill("research Jawhar");
-  await page.getByRole("button", { name: "Find places", exact: true }).click();
+  await query.press("Enter");
+  await expect(page.locator(".search-results .card")).toHaveCount(0);
+  await query.press("Control+Enter");
   await expect(page.locator(".search-results .card")).toHaveCount(1);
   await expect(page.locator(".search-results")).toContainText("Jawhar");
   await query.fill("quiet beaches");
-  await page.getByRole("button", { name: "Find places", exact: true }).click();
+  await query.press("Meta+Enter");
   await expect(page.locator(".search-results .card")).toHaveCount(2);
   await expect(page.locator(".search-results")).toContainText("Bordi");
   await query.fill("beaches or hills");
