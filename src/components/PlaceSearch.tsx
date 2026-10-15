@@ -189,6 +189,7 @@ export default function PlaceSearch({
           id="place-query"
           aria-describedby="place-query-shortcut"
           onKeyDown={(e) => {
+            if (e.nativeEvent.isComposing) return;
             if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
               e.preventDefault();
               if (!busy) e.currentTarget.form?.requestSubmit();

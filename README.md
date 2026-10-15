@@ -6,6 +6,10 @@ Peaceful places and one shared plan for a small group. Browse destinations from 
 
 ![TripCircle homepage](docs/homepage.png)
 
+## Small patch · 15 October 2026
+
+Place-search keyboard shortcuts now ignore Enter while an input method is composing text. This prevents Ctrl+Enter or ⌘+Enter from submitting an unfinished question. Desktop and mobile regression checks cover composition followed by normal shortcut submission.
+
 ## Small patch · 14 October 2026
 
 Place search now supports **Ctrl+Enter** and **⌘+Enter** to submit a question. Enter alone still adds a new line. The shortcut uses normal form validation and does not submit another request while a search is running. Desktop and mobile regression checks cover both shortcuts and multiline input.
