@@ -6,6 +6,10 @@ Peaceful places and one shared plan for a small group. Browse destinations from 
 
 ![TripCircle homepage](docs/homepage.png)
 
+## Small patch · 16 October 2026
+
+Holding Ctrl+Enter or ⌘+Enter no longer repeats place-search submissions. Repeated keydown events are ignored while a fresh key press still submits normally. Desktop and mobile regression checks cover held-key protection and normal shortcut submission.
+
 ## Small patch · 15 October 2026
 
 Place-search keyboard shortcuts now ignore Enter while an input method is composing text. This prevents Ctrl+Enter or ⌘+Enter from submitting an unfinished question. Desktop and mobile regression checks cover composition followed by normal shortcut submission.

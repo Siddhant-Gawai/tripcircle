@@ -192,7 +192,7 @@ export default function PlaceSearch({
             if (e.nativeEvent.isComposing) return;
             if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
               e.preventDefault();
-              if (!busy) e.currentTarget.form?.requestSubmit();
+              if (!busy && !e.repeat) e.currentTarget.form?.requestSubmit();
             }
           }}
           required

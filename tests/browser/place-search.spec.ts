@@ -53,6 +53,13 @@ test("catalogue categories match whole words and keep plural searches", async ({
   await query.dispatchEvent("keydown", {
     key: "Enter",
     ctrlKey: true,
+    repeat: true,
+  });
+  await expect(query).toHaveValue("research Jawhar");
+  await expect(page.locator(".search-conversation .user")).toHaveCount(0);
+  await query.dispatchEvent("keydown", {
+    key: "Enter",
+    ctrlKey: true,
     isComposing: true,
   });
   await expect(query).toHaveValue("research Jawhar");
