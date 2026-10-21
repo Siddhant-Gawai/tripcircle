@@ -5,6 +5,7 @@ import "../search.css";
 
 type Reply = { message: string; places: { id: string; reason: string }[] };
 type Turn = { role: "user" | "assistant"; content: string };
+const QUERY_LIMIT = 600;
 type Props = {
   places: Place[];
   signedIn?: boolean;
@@ -187,7 +188,7 @@ export default function PlaceSearch({
         <textarea
           ref={queryInput}
           id="place-query"
-          aria-describedby="place-query-shortcut"
+          aria-describedby="place-query-limit place-query-shortcut"
           onKeyDown={(e) => {
             if (e.nativeEvent.isComposing) return;
             if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
@@ -196,12 +197,15 @@ export default function PlaceSearch({
             }
           }}
           required
-          maxLength={600}
+          maxLength={QUERY_LIMIT}
           rows={2}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="A quiet beach from Ahmedabad for three days…"
         />
+        <p id="place-query-limit" className="small muted">
+          {query.length}/{QUERY_LIMIT} characters
+        </p>
         <p id="place-query-shortcut" className="small muted">
           Ctrl+Enter or ⌘+Enter to search. Enter adds a new line.
         </p>
