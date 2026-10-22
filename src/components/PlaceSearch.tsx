@@ -214,41 +214,46 @@ export default function PlaceSearch({
         </button>
       </form>
       {!!results.length && (
-        <div className="cards search-results">
-          {results.map((result) => {
-            const place = places.find((p) => p.id === result.id)!;
-            return (
-              <div key={place.id}>
-                <DestinationCard place={place} />
-                <p className="search-reason">{result.reason}</p>
-                <button
-                  disabled={saving !== null}
-                  onClick={async () => {
-                    if (!signedIn || !save) {
-                      signIn();
-                      return;
-                    }
-                    setSaving(place.id);
-                    setError("");
-                    try {
-                      await save(place.id, saved.includes(place.id));
-                    } catch (e) {
-                      setError((e as Error).message);
-                    } finally {
-                      setSaving(null);
-                    }
-                  }}
-                >
-                  {saving === place.id
-                    ? "Saving…"
-                    : saved.includes(place.id)
-                      ? "Remove saved place"
-                      : "Save place"}
-                </button>
-              </div>
-            );
-          })}
-        </div>
+        <section aria-labelledby="place-search-results-title">
+          <h2 id="place-search-results-title">
+            {results.length} {results.length === 1 ? "place" : "places"} found
+          </h2>
+          <div className="cards search-results">
+            {results.map((result) => {
+              const place = places.find((p) => p.id === result.id)!;
+              return (
+                <div key={place.id}>
+                  <DestinationCard place={place} />
+                  <p className="search-reason">{result.reason}</p>
+                  <button
+                    disabled={saving !== null}
+                    onClick={async () => {
+                      if (!signedIn || !save) {
+                        signIn();
+                        return;
+                      }
+                      setSaving(place.id);
+                      setError("");
+                      try {
+                        await save(place.id, saved.includes(place.id));
+                      } catch (e) {
+                        setError((e as Error).message);
+                      } finally {
+                        setSaving(null);
+                      }
+                    }}
+                  >
+                    {saving === place.id
+                      ? "Saving…"
+                      : saved.includes(place.id)
+                        ? "Remove saved place"
+                        : "Save place"}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </section>
       )}
       {signedIn && (
         <section className="saved-places">

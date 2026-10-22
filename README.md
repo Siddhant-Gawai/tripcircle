@@ -6,6 +6,10 @@ Peaceful places and one shared plan for a small group. Browse destinations from 
 
 ![TripCircle homepage](docs/homepage.png)
 
+## Small patch · 23 October 2026
+
+Place-search results now show how many matching places were found, with singular/plural labels. The cards sit in a labelled results section that screen-reader users can navigate to directly.
+
 ## Small patch · 22 October 2026
 
 The place-search question field now shows a live character counter against its existing 600-character limit. The counter is linked to the field as an accessible description, alongside the keyboard-shortcut hint.
