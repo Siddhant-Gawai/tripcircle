@@ -9,7 +9,7 @@ Peaceful places and one shared plan for a small group. Browse destinations from 
 ## Features
 
 - Explore five destination pages with real photos, viewpoints, small-stay leads, source links and itineraries.
-- Find destinations through conversational search, view recommendation cards and save places privately across devices.
+- Find destinations through conversational search, view recommendation cards and save places privately across devices, with destination-specific accessible save/remove labels.
 - Create private rooms with invite codes, or publish a trip preview others can request to join.
 - Sign in with Google. Organizers approve every joining request.
 - Shortlist places, mark date availability, suggest stays/transport and vote on options.

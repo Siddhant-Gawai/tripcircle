@@ -2,6 +2,10 @@
 
 Dated TripCircle patches, newest first. See the [README](README.md) for features, setup and project architecture.
 
+## 27 October 2026
+
+Save and remove buttons on destination cards now include the place name in their accessible labels, so screen-reader users can identify the destination without relying on nearby text. Desktop and mobile search checks use the destination-specific save labels.
+
 ## 23 October 2026
 
 Place-search results now show how many matching places were found, with singular/plural labels. The cards sit in a labelled results section that screen-reader users can navigate to directly.

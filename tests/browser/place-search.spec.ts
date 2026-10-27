@@ -32,7 +32,7 @@ test("catalogue search returns cards without model calls and requests sign-in to
   );
   expect(calls).toBe(0);
   await page
-    .getByRole("button", { name: "Save place", exact: true })
+    .getByRole("button", { name: "Save place: Bordi", exact: true })
     .first()
     .click();
   await expect(page.getByRole("dialog")).toBeVisible();
@@ -233,7 +233,9 @@ test("AI follow-ups keep context, save across reloads and add to a trip", async 
   expect(queries).toHaveLength(5);
   await expect(query).toBeEmpty();
   await expect(page.locator(".place-search [role=alert]")).toHaveCount(0);
-  await page.getByRole("button", { name: "Save place", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Save place: Bordi", exact: true })
+    .click();
   await expect(page.locator(".saved-places .card")).toHaveCount(1);
   await page.reload();
   await expect(page.locator(".saved-places .card")).toHaveCount(1);

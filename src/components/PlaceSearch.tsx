@@ -226,6 +226,7 @@ export default function PlaceSearch({
                   <DestinationCard place={place} />
                   <p className="search-reason">{result.reason}</p>
                   <button
+                    aria-label={`${saving === place.id ? "Saving place" : saved.includes(place.id) ? "Remove saved place" : "Save place"}: ${place.name}`}
                     disabled={saving !== null}
                     onClick={async () => {
                       if (!signedIn || !save) {
@@ -267,6 +268,7 @@ export default function PlaceSearch({
                     <div key={p.id}>
                       <DestinationCard place={p} />
                       <button
+                        aria-label={`Remove saved place: ${p.name}`}
                         disabled={saving !== null}
                         onClick={async () => {
                           setSaving(p.id);
