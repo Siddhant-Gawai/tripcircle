@@ -24,6 +24,8 @@ See the [changelog](CHANGELOG.md) for the dated patch history.
 
 Open **Ask TripCircle** (`#search`) to find destinations through chat and see the matches as photo cards. Signed-out visitors can search the catalogue without a model call. Signed-in visitors can ask follow-up questions, save destinations privately across devices and add saved places to a room they organize. **Use catalogue search** remains available if the AI quota or provider is unavailable.
 
+Saved-place removal shows progress on the selected card, with a destination-specific label and busy state for assistive tools. Failed changes keep the place saved and show an error for retry.
+
 The Supabase `place-search` Edge Function calls Groq's open Qwen model with strict structured output. It retrieves the catalogue itself, accepts only known destination IDs, and never creates destinations from model text. Photos, credits, source links and trip facts come from the existing records. This first version covers five researched destinations from Ahmedabad; it does not browse the web or verify current prices and bookings.
 
 Setup and limits are documented in [place search setup](docs/place-search.md). The connected Relay database and Edge Function have been deployed. Keep `GROQ_API_KEY` exclusively in Edge Function secrets.

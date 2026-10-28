@@ -2,6 +2,10 @@
 
 Dated TripCircle patches, newest first. See the [README](README.md) for features, setup and project architecture.
 
+## 28 October 2026
+
+Removing a saved place now shows **Removing…** on its card until the request finishes. The button also exposes a destination-specific progress label and busy state to assistive tools. Existing save/remove error handling keeps failed removals available for retry.
+
 ## 27 October 2026
 
 Save and remove buttons on destination cards now include the place name in their accessible labels, so screen-reader users can identify the destination without relying on nearby text. Desktop and mobile search checks use the destination-specific save labels.

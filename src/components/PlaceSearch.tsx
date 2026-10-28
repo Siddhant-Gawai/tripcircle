@@ -268,7 +268,8 @@ export default function PlaceSearch({
                     <div key={p.id}>
                       <DestinationCard place={p} />
                       <button
-                        aria-label={`Remove saved place: ${p.name}`}
+                        aria-label={`${saving === p.id ? "Removing saved place" : "Remove saved place"}: ${p.name}`}
+                        aria-busy={saving === p.id}
                         disabled={saving !== null}
                         onClick={async () => {
                           setSaving(p.id);
@@ -282,7 +283,7 @@ export default function PlaceSearch({
                           }
                         }}
                       >
-                        Remove saved place
+                        {saving === p.id ? "Removing…" : "Remove saved place"}
                       </button>
                     </div>
                   ))}
