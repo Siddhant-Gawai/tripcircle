@@ -311,7 +311,7 @@ export default function PlaceSearch({
                   <h3>Add a saved place to your trip</h3>
                   <label>
                     Saved destination
-                    <select name="place">
+                    <select name="place" disabled={saving !== null}>
                       {places
                         .filter((p) => saved.includes(p.id))
                         .map((p) => (
@@ -323,7 +323,7 @@ export default function PlaceSearch({
                   </label>
                   <label>
                     Your trip
-                    <select name="trip">
+                    <select name="trip" disabled={saving !== null}>
                       {trips.map((t) => (
                         <option value={t.id} key={t.id}>
                           {t.title}
@@ -331,8 +331,11 @@ export default function PlaceSearch({
                       ))}
                     </select>
                   </label>
-                  <button disabled={saving !== null}>
-                    Add to trip shortlist
+                  <button
+                    disabled={saving !== null}
+                    aria-busy={saving === "trip"}
+                  >
+                    {saving === "trip" ? "Adding…" : "Add to trip shortlist"}
                   </button>
                 </form>
               ) : (

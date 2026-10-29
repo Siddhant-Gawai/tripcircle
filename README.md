@@ -26,6 +26,8 @@ Open **Ask TripCircle** (`#search`) to find destinations through chat and see th
 
 Saved-place removal shows progress on the selected card, with a destination-specific label and busy state for assistive tools. Failed changes keep the place saved and show an error for retry.
 
+Adding a saved place to a trip shows progress and locks the destination/trip selectors until the request finishes.
+
 The Supabase `place-search` Edge Function calls Groq's open Qwen model with strict structured output. It retrieves the catalogue itself, accepts only known destination IDs, and never creates destinations from model text. Photos, credits, source links and trip facts come from the existing records. This first version covers five researched destinations from Ahmedabad; it does not browse the web or verify current prices and bookings.
 
 Setup and limits are documented in [place search setup](docs/place-search.md). The connected Relay database and Edge Function have been deployed. Keep `GROQ_API_KEY` exclusively in Edge Function secrets.
