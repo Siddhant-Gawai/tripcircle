@@ -73,6 +73,12 @@ test("catalogue categories match whole words and keep plural searches", async ({
   await query.press("Meta+Enter");
   await expect(page.locator(".search-results .card")).toHaveCount(2);
   await expect(page.locator(".search-results")).toContainText("Bordi");
+  await query.fill("coastline walks");
+  await page.getByRole("button", { name: "Find places", exact: true }).click();
+  await expect(page.locator(".search-results .card")).toHaveCount(2);
+  await query.fill("quiet shorelines");
+  await page.getByRole("button", { name: "Find places", exact: true }).click();
+  await expect(page.locator(".search-results .card")).toHaveCount(2);
   await query.fill("beaches or hills");
   await page.getByRole("button", { name: "Find places", exact: true }).click();
   await expect(page.locator(".search-results .card")).toHaveCount(4);

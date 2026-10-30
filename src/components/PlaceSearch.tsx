@@ -59,7 +59,8 @@ export default function PlaceSearch({
         const categories = [
           {
             name: "Beach",
-            pattern: /\b(beach(?:es)?|coast(?:al)?|sea(?:side)?|shores?)\b/,
+            pattern:
+              /\b(beach(?:es)?|coast(?:al|lines?)?|sea(?:side)?|shore(?:s|lines?)?)\b/,
           },
           { name: "Forest", pattern: /\b(forests?|waterfalls?|woods?)\b/ },
           { name: "Hills", pattern: /\b(hills?|mountains?|valleys?)\b/ },

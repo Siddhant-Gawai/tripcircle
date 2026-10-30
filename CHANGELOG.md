@@ -2,6 +2,10 @@
 
 Dated TripCircle patches, newest first. See the [README](README.md) for features, setup and project architecture.
 
+## 31 October 2026
+
+Catalogue searches for coastline/coastlines and shoreline/shorelines now match beach destinations. Whole-word matching is retained. Desktop and mobile regression checks cover both coastline and shoreline wording.
+
 ## 29 October 2026
 
 Adding a saved place to a trip now shows **Adding…** and an accessible busy state. Destination and trip selectors are disabled during save operations so their displayed values cannot change mid-request. The selectors and button become available again if the request fails.
